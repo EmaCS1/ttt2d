@@ -1,27 +1,38 @@
 local image = image
+local addhook = addhook
 
 Image = {}
 Image.mt = {}
+Image.alive = {}
 
 setmetatable(Image, {
-    __call = function(_, path, x, y, mode, ...)
-        if type(path) == 'string' then
-            local img = image(path, x, y, mode, unpack({...}))
-            return setmetatable({id = img}, Image.mt)
-        elseif type(path) == 'number' then
-            return setmetatable({id = path}, Image.mt)
-        end
+    __call = function(_, ...)
+        local img = image(unpack({...}))
+        local o = setmetatable({id = img, exists = true}, Image.mt)
+
+        Image.alive[img] = o
+        return o
     end,
     __index = function(_, key)
         local m = rawget(Image, key)
         if m then return m end
-        
+
         return rawget(Image.mt, key)
     end
 })
 
+-- Clear image objects
+addhook("startround_prespawn", "Image.hook")
+Image.hook = function()
+    for _,img in pairs(Image.alive) do
+        img.exists = false
+        img.id = -1
+    end
+
+    Image.alive = {}
+end
+
 local transform = {
-    remove = 'freeimage',
     alpha = 'imagealpha',
     blend = 'imageblend',
     color = 'imagecolor',
@@ -38,7 +49,17 @@ local transform = {
 
 for k,v in pairs(transform) do  -- generate methods from transform table
     Image.mt[k] = function(self, ...)
-        _G[v](self.id, unpack({...}))
+        if self.exists then
+            _G[v](self.id, unpack({...}))
+        end
+    end
+end
+
+function Image.mt:remove()
+    if self.exists then
+        freeimage(self.id)
+        Image.alive[self.id] = nil
+        self.exists = false
     end
 end
 

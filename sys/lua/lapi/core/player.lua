@@ -134,7 +134,8 @@ local methods = {
     kill = 'killplayer',
     reroute = 'reroute',
     shake = 'shake',
-    flash = 'flashplayer'
+    flash = 'flashplayer',
+    setammo = 'setammo'
 }
 
 for k,v in pairs(methods) do

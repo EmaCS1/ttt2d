@@ -1,5 +1,7 @@
 We need to handle these commands without parse() function.
 
+setammo
+
 msg
 restart
 restartround
