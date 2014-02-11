@@ -63,14 +63,19 @@ function Player.mt:set_mia(killer)
     self.info = {
         time = os.time(),
         found = false,
+
         x = self.x,
         y = self.y,
+
         name = self.name,
+        cname = self:c_name(),
         role = self.role,
         color = self:get_color(),
+
         killer = killer,
         killer_name = killer.name,
-        killer_role = killer.role
+        killer_role = killer.role,
+        killer_wpn = killer.weapon
     }
 
     self:spawn_body(killer)
@@ -111,6 +116,10 @@ end
 -- {{{ Common functions
 function Player.mt:get_color()
     return TTT.get_color(self.role)
+end
+
+function Player.mt:c_name()
+    return self:get_color() .. self.name
 end
 
 function Player.mt:set_team(value)
@@ -212,7 +221,7 @@ function Player.mt:load_data()
     end
 
     Timer(3000, function()
-        self:notify("Welcome back, " .. p.name .. "!@C")
+        self:notify("Welcome back, " .. self.name .. "!@C")
     end)
 end
 -- }}}

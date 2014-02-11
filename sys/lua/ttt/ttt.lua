@@ -138,9 +138,8 @@ Hook("hit", function(victim, p, wpn, hpdmg, apdmg, rawdmg)
 end)
 
 Hook("use", function(p)
-    -- loop bodies
     Player.each(function(p2)
-        if not p2.info then
+        if not p2.info then -- if player doesn't have a corpse
             return
         end
 
@@ -153,14 +152,24 @@ Hook("use", function(p)
         end
 
         if info.found then
-            p:msg(Color.white.."This body belongs to "..info.color..info.name.."@C")
+            p:msg(Color.white.."This body belongs to "..info.cname)
+
+            if p:is_detective() then
+                local time = os.time()-info.time
+                p:msg(Color.detective.."He was killed "..time.." seconds ago using weapon "..info.killer_wpn)
+            end
+
         else
             info.found = true
 
             p2.body:t_alpha(2000, 1)
             p2:set_spectator()
 
-            msg(Color.innocent..p.name..Color.white.." found the body of "..info.color..info.name.."@C")
+            if p:is_detective() then
+                msg(Color.detective..p.name..Color.white.." found the body of "..info.cname.."@C")
+            else
+                msg(Color.innocent..p.name..Color.white.." found the body of "..info.cname.."@C")
+            end
         end
 
         return
@@ -216,6 +225,7 @@ Hook("second", function()
 end)
 -- }}}
 
+-- {{{ General functions
 TTT.get_color = function(role)
     local tbl = {}
     tbl[R_TRAITOR] = Color.traitor
@@ -264,6 +274,24 @@ TTT.spawn_items = function()
     end
 end
 
+TTT.notify_teams = function()
+    Player.each(function(p)
+        if p:is_detective() then
+            msg(p:c_name()..Color.white.." is detective.")
+            return
+
+        elseif not p:is_traitor() then
+            return
+        end
+
+        for _,fellow in pairs(TTT.traitors) do
+            if p ~= fellow then
+                p:msg(fellow:c_name()..Color.white.." is traitor.")
+            end
+        end
+    end)
+end
+
 TTT.select_teams = function()
     Player.each(function(p)
         if p.health == 0 then
@@ -294,19 +322,20 @@ TTT.select_teams = function()
     end
 
     -- select detectives
+    TTT.detectives = {}
     for i=1,d_num do
         local rnd = math.random(#players)
         local p = table.remove(players, rnd)
 
         p:set_detective()
-
-        msg(Color.detective..p.name..Color.white.." is detective.")
+        table.insert(TTT.detectives, p)
     end
 
-    -- all other players are innocent
     for _,p in pairs(players) do
         p:set_innocent()
     end
 
+    TTT.notify_teams()
     Hud.mark_players()
 end
+-- }}}

@@ -47,6 +47,18 @@ function Hud.update_hp(p)
     hp:t_move(speed, Hud.x-100 + scale*100, Hud.y)
     hp:t_color(speed, r, g, b)
 end
+
+function Hud.flash(p)
+    local img = Image("gfx/block.bmp", 320, 240, 2, p.id)
+    img:scale(20, 20)
+    img:color(250,0,0)
+    img:alpha(0.5)
+    img:t_alpha(200, 0)
+
+    Timer(200, function()
+        img:remove()
+    end)
+end
 -- }}}
 
 -- {{{ Role
@@ -75,12 +87,14 @@ function Hud.draw_role(p)
 end
 -- }}}
 
+-- {{{ Shadows
 function Hud.mark_players()
     Player.each(function(p)
         if p:is_detective() then
             local img = Image("gfx/shadow.bmp<a>", 2, 0, p.id+100)
             img:scale(1.8, 1.8)
             img:color(50, 50, 250)
+
         elseif p:is_traitor() then
             for _,p2 in pairs(TTT.traitors) do
                 local img = Image("gfx/shadow.bmp<a>", 2, 0, p.id+100, p2.id)
@@ -90,6 +104,7 @@ function Hud.mark_players()
         end
     end)
 end
+-- }}}
 
 -- {{{ Hooks
 Hook("second", Hud.update_clock)
@@ -117,8 +132,16 @@ Hook("spawn", function(p)
 end, -100)
 
 Hook("hit", function(p)
+    local hp = p.health
+
     Timer(1, function()
+        local diff = p.health-hp
+
         Hud.update_hp(p)
+
+        if diff < 0 then
+            Hud.flash(p)
+        end
     end)
 end, -100)
 

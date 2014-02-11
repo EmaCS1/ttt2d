@@ -13,12 +13,21 @@ function Karma.give_reward(p, value)
     if #Player.table < Karma.min_players then
         return
     end
+
     if p.karma > 1000 then -- make it harder to reach Karma.max
         local halflife = (Karma.max-Karma.base) * Karma.halflife
         value = value * math.exponential_decay(halflife, p.karma-Karma.base)
     end
 
     p.karma = math.min(p.karma+value, Karma.max)
+end
+
+function Karma.give_points(p, value)
+    if #Player.table < Karma.min_players then
+        return
+    end
+
+    p.points = p.points + math.max(value, 0)
 end
 -- }}}
 
@@ -67,14 +76,13 @@ function Karma.killed(attacker, victim)
 
     if not attacker:is_traitor() and victim:is_traitor() then
         local reward = Karma.get_kill_reward()
-        Karma.give_reward(attacker, reward)
 
-        if #Player.table >= Karma.min_players then
-            attacker.points = attacker.points + (attacker.karma/Karma.base)
-        end
+        Karma.give_reward(attacker, reward)
+        Karma.give_points(attacker, (attacker.karma/Karma.base))
 
     elseif attacker:is_traitor() == victim:is_traitor() then
         local penalty = Karma.get_kill_penalty(victim.karma)
+
         Karma.give_penalty(attacker, penalty)
         attacker.karma_clean = false
     end
