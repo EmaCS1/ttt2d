@@ -6,32 +6,21 @@ Color.spectator = Color(220, 220, 20)
 Color.white = Color(220, 220, 220)
 
 -- game states
-STATE_WAITING = 1
-STATE_STARTING = 2
-STATE_PREPARING = 3
-STATE_RUNNING = 4
+S_WAITING = 1
+S_PREPARING = 2
+S_RUNNING = 3
 
 -- player roles
-ROLE_INNOCENT = 1
-ROLE_TRAITOR = 2
-ROLE_DETECTIVE = 3
-ROLE_MIA = 4
-ROLE_SPECTATOR = 5
-ROLE_PREPARING = 6
-
--- player ranks
-RANK_GUEST = 1
-RANK_VIP = 2
-RANK_MODERATOR = 3
-RANK_ADMIN = 4
-
--- ground items
-WEAPON_1 = {30, 20, 10}
-WEAPON_2 = {2, 4, 69}
+R_INNOCENT = 1
+R_TRAITOR = 2
+R_DETECTIVE = 3
+R_MIA = 4
+R_SPECTATOR = 5
+R_PREPARING = 6
 
 -- time
-TIME_PREPARE = 15
-TIME_GAME = 180
+T_PREPARE = 15
+T_GAME = 180
 
 -- karma
 Karma.base = 1000

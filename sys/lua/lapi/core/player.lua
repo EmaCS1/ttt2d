@@ -17,6 +17,30 @@ Player.indextable = {
     weapon = 'setweapon'
 }
 
+local eachtbl = {
+    each = "table",
+    each_living = "tableliving",
+    each1 = "team1",
+    each2 = "team2",
+    each1_living = "team1living",
+    each2_living = "team2living"
+}
+for k,v in pairs(eachtbl) do
+    Player[k] = function(callback)
+        local players = Player[v]
+        for _,v in pairs(players) do
+            callback(v)
+        end
+    end
+end
+
+Player.each = function(callback)
+    local players = Player.table
+    for _,p in pairs(players) do
+        callback(p)
+    end
+end
+
 setmetatable(Player, {
     __call = function(_, arg)
         if type(arg) == "number" then
@@ -40,10 +64,10 @@ setmetatable(Player, {
     __index = function(_, key)
         local m = rawget(Player, key)
         if m then return m end
-        
+
         m = rawget(Player.mt, key)
         if m then return m end
-        
+
         return Player(player(0, key))
     end
 })
@@ -52,21 +76,21 @@ function Player.mt:__index(key)
     local m = rawget(Player.mt, key)
     if m then
         return m
-    else
-        if key == 'enemy' then
-            local team = self.team
-            if team == 1 then
-                return 2
-            elseif team == 2 then
-                return 1
-            else 
-                return 0
-            end
-        elseif key == 'weapons' then
-            return playerweapons(self.id)
-        else
-            return player(self.id, key)
+    end
+
+    if key == 'enemy' then
+        local team = self.team
+        if team == 1 then
+            return 2
+        elseif team == 2 then
+            return 1
+        else 
+            return 0
         end
+    elseif key == 'weapons' then
+        return playerweapons(self.id)
+    else
+        return player(self.id, key)
     end
 end
 
@@ -95,7 +119,7 @@ function Player.mt:__newindex(key, value)
         return
     elseif key == 'weapons' then
         local tbl = playerweapons(self.id)
-        
+
         for k,v in pairs(value) do
             local found = false
             for k2,v2 in pairs(tbl) do
@@ -192,7 +216,7 @@ local methods = {
 
 for k,v in pairs(methods) do
     local func = _G[v]
-    
+
     Player.mt[v] = function(self, ...)
         return func(self.id, unpack({...}))
     end
