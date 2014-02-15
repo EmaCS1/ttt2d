@@ -39,6 +39,12 @@ TTT.round_count = 0
 -- {{{ Hooks
 Hook("startround", function()
     print(Color.traitor.."TTT startround")
+
+    if #Players.table < 2 then
+        print("no enough players")
+        return
+    end
+
     TTT.round_started = os.time()
     TTT.round_count = TTT.round_count+1
 
@@ -224,9 +230,7 @@ Hook("second", function()
         end
 
     elseif TTT.state == S_WAITING then
-        local players = Player.table
-
-        if #players > 1 then
+        if #Player.table > 1 then
             print("Start new round")
             Parse("endround", 1)
         end
