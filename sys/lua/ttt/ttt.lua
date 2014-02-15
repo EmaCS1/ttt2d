@@ -223,8 +223,10 @@ Hook("second", function()
 
     elseif TTT.state == S_WAITING then
         local players = Player.table
+        print("Waiting for more players")
 
         if #players > 1 then
+            print("Start new round")
             Parse("endround", 1)
         end
     end
