@@ -190,6 +190,12 @@ Hook("buy", function()
     return 1
 end)
 
+Hook("leave", function(p)
+    p.body = nil
+    p.info = nil
+end)
+
+
 Hook("second", function()
     local time = os.time() - TTT.round_started
 
@@ -250,6 +256,8 @@ TTT.round_end = function(winner)
 
     Player.each(function(p)
         p:save_data()
+        p.info = nil
+        p.body = nil
     end)
 end
 

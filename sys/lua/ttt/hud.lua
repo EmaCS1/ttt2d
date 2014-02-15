@@ -109,6 +109,10 @@ end
 -- {{{ Hooks
 Hook("second", Hud.update_clock)
 
+Hook("leave", function(p)
+    p.hud = {}
+end)
+
 Hook("startround", function()
     Hud.draw_base()
 
