@@ -84,6 +84,8 @@ end)
 
 Hook("spawn", function(p)
     if TTT.state == S_RUNNING and not p:is_mia() then
+        p.info = {}
+        p.body = {}
         Timer(1, function()
             p:set_spectator()
         end)
@@ -223,7 +225,6 @@ Hook("second", function()
 
     elseif TTT.state == S_WAITING then
         local players = Player.table
-        print("Waiting for more players")
 
         if #players > 1 then
             print("Start new round")
@@ -258,8 +259,6 @@ TTT.round_end = function(winner)
 
     Player.each(function(p)
         p:save_data()
-        p.info = nil
-        p.body = nil
     end)
 end
 
