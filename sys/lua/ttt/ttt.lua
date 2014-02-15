@@ -40,7 +40,7 @@ TTT.round_count = 0
 Hook("startround", function()
     print(Color.traitor.."TTT startround")
 
-    if #Players.table < 2 then
+    if #Player.table < 2 then
         print("no enough players")
         return
     end
