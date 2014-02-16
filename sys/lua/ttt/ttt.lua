@@ -206,6 +206,7 @@ end)
 Hook("leave", function(p)
     p.body = nil
     p.info = nil
+    p.karma = nil
 end)
 
 
