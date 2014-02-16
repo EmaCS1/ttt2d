@@ -178,6 +178,7 @@ function Player.mt:reset_data()
     self.playtime = 0
     self.savetime = os.time()
     self.points = 0
+    self.rank = RANK_GUEST
 end
 
 function Player.mt:save_data()
@@ -193,13 +194,17 @@ function Player.mt:save_data()
     f:write({
         karma = self.karma,
         playtime = self.playtime,
-        points = self.points
+        points = self.points,
+        rank = self.rank
     })
 end
 
 function Player.mt:load_data()
     if self.usgn == 0 then
         self.karma = Karma.player_base
+        Timer(3000, function()
+            self:notify("Please login usgn to enjoy full karma bonuses!@C")
+        end)
         return
     end
 
@@ -218,6 +223,9 @@ function Player.mt:load_data()
 
     if self.karma < Karma.reset then
         self.karma = Karma.reset
+        Timer(5000, function()
+            self:notify("Please don't let your karma drop next time!@C")
+        end)
     end
 
     Timer(3000, function()
