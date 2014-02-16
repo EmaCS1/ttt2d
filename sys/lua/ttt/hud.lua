@@ -35,6 +35,9 @@ function Hud.draw_hp(p)
 end
 
 function Hud.update_hp(p)
+    if not p.hud.hp then
+        return
+    end
     local speed = 350
     local scale = p.health / p.maxhealth
 
