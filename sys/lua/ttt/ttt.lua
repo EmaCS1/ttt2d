@@ -273,7 +273,7 @@ TTT.round_end = function(winner)
 end
 
 TTT.spawn_items = function()
-    local players = Player.tableliving
+    local players = Player.table
     
     local wpnlist1 = {11, 20, 20, 23, 24}
     local wpnlist2 = {2, 2, 2, 2, 3, 6}
