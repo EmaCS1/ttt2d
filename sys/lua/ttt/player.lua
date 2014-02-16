@@ -74,6 +74,7 @@ function Player.mt:set_mia(killer)
 
         killer = killer,
         killer_name = killer.name,
+        killer_cname = killer:c_name(),
         killer_role = killer.role,
         killer_wpn = killer.weapon
     }
