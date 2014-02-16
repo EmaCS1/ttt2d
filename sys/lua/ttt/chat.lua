@@ -126,7 +126,7 @@ end)
 Chat.add_command("commands", "Show commands available", RANK_GUEST, function(p, arg)
     for command,tbl in pairs(Chat.commands) do
         if p.rank >= tbl.rank then
-            p:msg(Color.white .. command .. " | " .. tbl.desc)
+            p:msg(Color.white .. command .. " - " .. tbl.desc)
         end
     end
 end)
@@ -147,9 +147,13 @@ end)
 
 Chat.add_command("reset", "Reset player's karma", RANK_ADMIN, function(p, arg)
     local id = tonumber(arg)
+    if not id or  id < 1 or id > 32 then
+        p:msg("Invalid id")
+        return
+    end
+
     Player(id).karma = Karma.base
     Player(id).score = Karma.base
-    Karma.apply_karma(Player(id))
 end)
 
 Chat.add_command("ban", "Ban player for 6 hours", RANK_MODERATOR, function(p, arg)
