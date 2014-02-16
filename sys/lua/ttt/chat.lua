@@ -189,5 +189,5 @@ end)
 
 Chat.add_command("points", "Show how many points you got", RANK_GUEST, function(p, arg)
     local points = math.floor(p.points)
-    p:msg(Color.white .. "You got " .. Color.traitor .. (points-p.points_used) .. "/" .. points .. Color.white .. " points.")
+    p:msg(Color.white.."Points: "..Color.traitor..(points-p.points_used)..Color.white.." Total earned: "..points)
 end)
