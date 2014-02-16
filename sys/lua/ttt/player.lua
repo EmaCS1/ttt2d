@@ -24,7 +24,6 @@ end
 
 function Player.mt:set_traitor()
     self:set_role(R_TRAITOR)
-    self:equip(1)
 
     Hud.draw_role(self)
 end
@@ -178,6 +177,7 @@ function Player.mt:reset_data()
     self.playtime = 0
     self.savetime = os.time()
     self.points = 0
+    self.points_used = 0
     self.rank = RANK_GUEST
 end
 
@@ -195,6 +195,7 @@ function Player.mt:save_data()
         karma = self.karma,
         playtime = self.playtime,
         points = self.points,
+        poinst_used = self.points_used,
         rank = self.rank
     })
 end

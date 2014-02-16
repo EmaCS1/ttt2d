@@ -188,5 +188,6 @@ Chat.add_command("make_moderator", "Make moderator", RANK_ADMIN, function(p, arg
 end)
 
 Chat.add_command("points", "Show how many points you got", RANK_GUEST, function(p, arg)
-    p:msg(Color.white .. "You got " .. Color.traitor .. math.floor(p.points) .. Color.white .. " points.")
+    local points = math.floor(p.points)
+    p:msg(Color.white .. "You got " .. Color.traitor .. (points-p.points_used) .. "/" .. points .. Color.white .. " points.")
 end)

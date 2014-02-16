@@ -242,6 +242,58 @@ Hook("second", function()
         end
     end
 end)
+
+TTT.traitorshop = {
+    {1, "USP"},
+    {3, "M4A1"},
+    {4, "Teleporter"},
+    {4, "Spoofer"},
+    {50, "Multitool"}
+}
+
+Hook("severaction", function(p, action)
+    if TTT.state == S_RUNNING then
+        if p:is_traitor() then
+            local points = math.floor(p.points-p.points_used)
+            local m = Menu("Traitor Shop (Points: " .. points .. " )")
+
+            for k,v in pairs(TTT.traitorshop) do
+                local label = v[2] .. "|" .. v[1]
+                if points < v[1] then
+                    label = "("..label..")"
+                end
+                m:button({label, k})
+            end
+
+            m:bind(function(p, label, item)
+                if not p:is_traitor() or TTT.state ~= S_RUNNING then
+                    p:msg(Color.white.."You can't buy Traitor Shop items right now.")
+                    return
+                end
+
+                local price = TTT.traitorshop[item][1]
+                if points < price then
+                    p:msg(Color.white.."You don't have enought points for this.")
+                    return
+                end
+
+                if item > 2 then
+                    p:msg(Color.white.."Item currently disabled sorry.")
+                    return
+                end
+
+                if item == 1 then
+                    p:equip(1)
+                elseif item == 2 then
+                    p:equip(32)
+                end
+
+                p.points_used = p.points_used + price
+                p:msg(Color.white.."You bought "..TTT.traitorshop[item][2])
+            end)
+        end
+    end
+end)
 -- }}}
 
 -- {{{ General functions
@@ -265,7 +317,7 @@ TTT.round_end = function(winner)
     -- tell killers etc
     Player.each(function(p)
         if p.info and p.info.killer_cname then
-            p:msg("You were killed by " .. p.info.killer_cname)
+            p:msg(Color.white .. "You were killed by " .. p.info.killer_cname)
         end
     end)
 
