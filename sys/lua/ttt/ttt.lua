@@ -251,7 +251,7 @@ end)
 
 TTT.traitorshop = {
     {1, "USP"},
-    {3, "M4A1"},
+    {4, "M4A1"},
     {4, "Teleporter"},
     {4, "Spoofer"},
     {50, "Multitool"}
