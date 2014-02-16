@@ -169,7 +169,7 @@ Hook("use", function(p)
 
             if p:is_detective() then
                 local time = os.time()-info.time
-                p:msg(Color.detective.."He was killed "..time.." seconds ago using weapon "..info.killer_wpn)
+                p:msg(Color.detective.."He was killed "..time.." seconds ago using weapon "..item(info.killer_wpn,"name"))
             end
 
         else

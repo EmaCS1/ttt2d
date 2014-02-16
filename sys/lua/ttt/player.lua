@@ -32,7 +32,6 @@ end
 function Player.mt:set_detective()
     self:set_role(R_DETECTIVE)
     self:equip(79)
-    self:equip(78)
 
     if self.team ~= 1 then
         self:set_team(1)
