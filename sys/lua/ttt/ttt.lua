@@ -262,10 +262,11 @@ Hook("serveraction", function(p, action)
                 if points < v[1] then
                     label = "("..label..")"
                 end
-                m:button(label, k)
+                m:button(k, label)
             end
 
-            m:bind(function(p, label, item)
+            m:bind(function(p, item, label)
+                msg("item " .. item)
                 if not p:is_traitor() or TTT.state ~= S_RUNNING then
                     p:msg(Color.white.."You can't buy Traitor Shop items right now.")
                     return
