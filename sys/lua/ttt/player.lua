@@ -181,7 +181,7 @@ function Player.mt:reset_data()
 end
 
 function Player.mt:save_data()
-    if not self.usgn then
+    if self.usgn == 0 then
         return
     end
 
@@ -198,7 +198,7 @@ function Player.mt:save_data()
 end
 
 function Player.mt:load_data()
-    if not self.usgn then
+    if self.usgn == 0 then
         self.karma = Karma.player_base
         return
     end

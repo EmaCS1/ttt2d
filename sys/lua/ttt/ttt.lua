@@ -34,6 +34,11 @@ Walk.scan() -- scan walkable tiles
 TTT.state = S_WAITING
 TTT.round_started = os.time()
 TTT.round_count = 0
+
+-- fix bots
+for i=1,32 do
+    Player(i).hud = {}
+end
 -- }}}
 
 -- {{{ Hooks

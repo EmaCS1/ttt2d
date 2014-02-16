@@ -103,7 +103,11 @@ function Karma.round_end(winner)
         end
 
         if p.karma < Karma.kick and not p.bot then
-            p:banusgn(5, "Your karma went too low. Banned for 5 minutes!")
+            if p.usgn == 0 then
+                p:banip(5, "Your karma went too low. Banned for 5 minutes!")
+            else
+                p:banusgn(5, "Your karma went too low. Banned for 5 minutes!")
+            end
         end
 
         p.score = p.karma
