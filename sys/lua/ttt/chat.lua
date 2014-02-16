@@ -36,7 +36,7 @@ function Chat.traitor_message(p, message)
         if recv:is_traitor() then
             recv:msg(Chat.format(p, message))
         else
-            recv:msg(Chat.format(p, message, ROLE_INNOCENT))
+            recv:msg(Chat.format(p, message, R_INNOCENT))
         end
     end
 end
