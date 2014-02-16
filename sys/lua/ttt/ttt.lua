@@ -266,7 +266,6 @@ Hook("serveraction", function(p, action)
             end
 
             m:bind(function(p, item, label)
-                msg("item " .. item)
                 if not p:is_traitor() or TTT.state ~= S_RUNNING or not TTT.traitorshop[item] then
                     p:msg(Color.white.."You can't buy Traitor Shop items right now.")
                     return
