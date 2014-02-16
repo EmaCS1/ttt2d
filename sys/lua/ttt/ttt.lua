@@ -70,7 +70,7 @@ Hook("startround", function()
         TTT.state = S_RUNNING
     end)
 
-    TTT.round_timer = Timer(120000, function()
+    TTT.round_timer = Timer(180000, function()
         msg(Color.white.."Time ran out!"..Color.traitor.." Traitors lost!@C")
         TTT.round_end(R_INNOCENT)
     end)

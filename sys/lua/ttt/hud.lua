@@ -5,7 +5,7 @@ Hud.clock = Hudtxt(0, 1)
 
 -- {{{ Clock
 function Hud.update_clock()
-    local time = 120 - (os.time() - TTT.round_started)
+    local time = 180 - (os.time() - TTT.round_started)
     local str = "0:00"
 
     if time > 0 then
