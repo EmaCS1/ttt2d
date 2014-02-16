@@ -252,8 +252,10 @@ TTT.traitorshop = {
 }
 
 Hook("severaction", function(p, action)
+    print("serveraction " .. action)
     if TTT.state == S_RUNNING then
         if p:is_traitor() then
+            print("traitor")
             local points = math.floor(p.points-p.points_used)
             local m = Menu("Traitor Shop (Points: " .. points .. " )")
 
@@ -291,6 +293,7 @@ Hook("severaction", function(p, action)
                 p.points_used = p.points_used + price
                 p:msg(Color.white.."You bought "..TTT.traitorshop[item][2])
             end)
+            print("done")
         end
     end
 end)
