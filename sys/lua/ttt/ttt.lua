@@ -255,7 +255,7 @@ Hook("serveraction", function(p, action)
     if TTT.state == S_RUNNING and action == 1 then
         if p:is_traitor() then
             local points = math.floor(p.points-p.points_used)
-            local m = Menu("Traitor Shop (Points: " .. points .. " )")
+            local m = p:menu("Traitor Shop (Points: " .. points .. " )")
 
             for k,v in pairs(TTT.traitorshop) do
                 local label = v[2] .. "|" .. v[1]
