@@ -275,8 +275,8 @@ end
 TTT.spawn_items = function()
     local players = Player.tableliving
     
-    local wpnlist1 = [11, 20, 20, 23, 24]
-    local wpnlist2 = [2, 2, 2, 2, 3, 6]
+    local wpnlist1 = {11, 20, 20, 23, 24}
+    local wpnlist2 = {2, 2, 2, 2, 3, 6}
 
     local wpn1 = math.min(#players*2, 16)
     local wpn2 = math.min(#players*2, 16)
