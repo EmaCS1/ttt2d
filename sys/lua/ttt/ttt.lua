@@ -262,7 +262,7 @@ Hook("serveraction", function(p, action)
                 if points < v[1] then
                     label = "("..label..")"
                 end
-                m:button({label, k})
+                m:button(label, k)
             end
 
             m:bind(function(p, label, item)
