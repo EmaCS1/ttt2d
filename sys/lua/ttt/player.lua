@@ -133,9 +133,11 @@ function Player.mt:c_name()
 end
 
 function Player.mt:set_team(value)
-    self.change_team = true
-    self.team = value
-    self.change_team = false
+    Timer(1, function()
+        self.change_team = true
+        self.team = value
+        self.change_team = false
+    end)
 end
 
 function Player.mt:notify(message)
