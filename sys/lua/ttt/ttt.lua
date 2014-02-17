@@ -252,9 +252,13 @@ end)
 TTT.traitorshop = {
     {1, "USP"},
     {4, "M4A1"},
-    {4, "Teleporter"},
-    {4, "Spoofer"},
-    {50, "Multitool"}
+    {4, "Armor"},
+    {10, "Stealth Suit"}
+}
+TTT.detectiveshop = {
+    {1, "Medikit"},
+    {2, "Armor"},
+    {5, "Tactical Shield"}
 }
 
 Hook("serveraction", function(p, action)
@@ -283,19 +287,53 @@ Hook("serveraction", function(p, action)
                     return
                 end
 
-                if item > 2 then
-                    p:msg(Color.white.."Item currently disabled sorry.")
-                    return
-                end
-
                 if item == 1 then
                     p:equip(1)
                 elseif item == 2 then
                     p:equip(32)
+                elseif item == 3 then
+                    p:equip(79)
+                elseif item == 4 then
+                    p:equip(84)
                 end
 
                 p.points_used = p.points_used + price
                 p:msg(Color.white.."You bought "..TTT.traitorshop[item][2])
+            end)
+        elseif p:is_detective() then
+            local points = math.floor(p.points-p.points_used)
+            local m = p:menu("Detective Shop (Points: " .. points .. " )")
+
+            for k,v in pairs(TTT.detectiveshop) do
+                local label = v[2] .. "|" .. v[1]
+                if points < v[1] then
+                    label = "("..label..")"
+                end
+                m:button(k, label)
+            end
+
+            m:bind(function(p, item, label)
+                if not p:is_detective() or TTT.state ~= S_RUNNING or not TTT.detectiveshop[item] then
+                    p:msg(Color.white.."You can't buy Detective Shop items right now.")
+                    return
+                end
+
+                local price = TTT.detectiveshop[item][1]
+                if points < price then
+                    p:msg(Color.white.."You don't have enought points for this.")
+                    return
+                end
+
+                if item == 1 then
+                    Parse("spawnitem", 64, p.tilex, p.tiley)
+                elseif item == 2 then
+                    p:equip(79)
+                elseif item == 3 then
+                    p:equip(41)
+                end
+
+                p.points_used = p.points_used + price
+                p:msg(Color.white.."You bought "..TTT.detectiveshop[item][2])
             end)
         end
     end

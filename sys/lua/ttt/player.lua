@@ -25,18 +25,29 @@ end
 function Player.mt:set_traitor()
     self:set_role(R_TRAITOR)
 
+    if self.team ~= 1 then
+        self:set_team(1)
+    end
+
     Hud.draw_role(self)
+
+    Timer(3000, function()
+        p:notify("Press F2 to access Traitor Shop!")
+    end)
 end
 
 function Player.mt:set_detective()
     self:set_role(R_DETECTIVE)
-    self:equip(79)
 
     if self.team ~= 1 then
         self:set_team(1)
     end
 
     Hud.draw_role(self)
+
+    Timer(3000, function()
+        p:notify("Press F2 to access Detective Shop!")
+    end)
 end
 
 function Player.mt:set_spectator()
