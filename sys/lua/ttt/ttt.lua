@@ -394,7 +394,7 @@ Hook("serveraction", function(p, action)
             local m = p:menu("Throw a grenade")
 
             for k,v in pairs(p.grenades) do
-                b:button(k, itemtype(v, "name"))
+                m:button(k, itemtype(v, "name"))
             end
 
             m:bind(function(p, item, label)
