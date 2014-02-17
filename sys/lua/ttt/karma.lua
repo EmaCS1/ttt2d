@@ -102,7 +102,7 @@ function Karma.round_end(winner)
             Karma.give_reward(p, Karma.regen + (p.karma_clean and Karma.clean or 0))
         end
 
-        if p.karma < Karma.kick and not p.bot then
+        if p.karma < Karma.kick then
             if p.usgn == 0 then
                 p:banip(5, "Your karma went too low. Banned for 5 minutes!")
             else

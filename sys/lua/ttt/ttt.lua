@@ -364,6 +364,17 @@ TTT.round_end = function(winner)
     end
 
     -- tell killers etc
+    if TTT.traitors_cname then
+        if #TTT.traitors_cname == 1 then
+            msg(TTT.traitors_cname[1] .. Color.white .. " was the only traitor.")
+        else
+            msg(Color.white .. "Traitors were:")
+            for _,cname in pairs(TTT.traitors_cname) do
+                msg(cname)
+            end
+        end
+    end
+
     Player.each(function(p)
         if p.info and p.info.killer_cname then
             p:msg(Color.white .. "You were killed by " .. p.info.killer_cname)
@@ -443,12 +454,14 @@ TTT.select_teams = function()
 
     -- select traitors
     TTT.traitors = {}
+    TTT.traitors_cname = {}
     for i=1,t_num do
         local rnd = math.random(#players)
         local p = table.remove(players, rnd)
 
         p:set_traitor()
         table.insert(TTT.traitors, p)
+        table.insert(TTT.traitors_cname, p:c_name())
     end
 
     -- select detectives
