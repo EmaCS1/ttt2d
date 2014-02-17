@@ -151,7 +151,10 @@ end)
 
 Hook("endround", function(reason)
     Player.each(function(p)
-        p:set_spectator()
+        if p.has_armor then
+            p:set_spectator()
+            p.has_armor = false
+        end
     end)
 end)
 
@@ -298,8 +301,10 @@ Hook("serveraction", function(p, action)
                     p:equip(32)
                 elseif item == 3 then
                     p:equip(79)
+                    p.has_armor = true
                 elseif item == 4 then
                     p:equip(84)
+                    p.has_armor = true
                 end
 
                 p.points_used = p.points_used + price
@@ -333,6 +338,7 @@ Hook("serveraction", function(p, action)
                     Parse("spawnitem", 64, p.tilex, p.tiley)
                 elseif item == 2 then
                     p:equip(79)
+                    p.has_armor = true
                 elseif item == 3 then
                     p:equip(41)
                 end
