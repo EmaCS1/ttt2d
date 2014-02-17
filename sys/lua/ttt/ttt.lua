@@ -59,6 +59,7 @@ Hook("startround", function()
         if p.health > 0 then
             p.weapons = {50}
         end
+        p.grenades = nil
 
         p:set_preparing()
     end)
@@ -205,7 +206,7 @@ Hook("use", function(p)
             local txt = Color.detective.."He was killed "..time.." seconds ago"
             local wpn = itemtype(info.killer_wpn, "name")
             if wpn then
-                p:msg(txt.." using "..wpn)
+                p:msg(txt.." using "..Color.traitor..wpn)
             else
                 p:msg(txt)
             end
@@ -333,11 +334,13 @@ Hook("serveraction", function(p, action)
                         p.grenades = {}
                     end
                     table.insert(p.grenades, 53)
+                    p:notify("Press F3 to throw a grenade")
                 elseif item == 6 then
                     if not p.grenades then
                         p.grenades = {}
                     end
                     table.insert(p.grenades, 51)
+                    p:notify("Press F3 to throw a grenade")
                 end
 
                 p.points_used = p.points_used + price
@@ -374,6 +377,7 @@ Hook("serveraction", function(p, action)
                         p.grenades = {}
                     end
                     table.insert(p.grenades, 54)
+                    p:notify("Press F3 to throw a grenade")
                 elseif item == 3 then
                     p:equip(79)
                     p.has_armor = true
@@ -387,8 +391,19 @@ Hook("serveraction", function(p, action)
         end
     elseif TTT.state == S_RUNNING and action == 2 then
         if p:is_traitor() or p:is_detective() then
-            if not p.grenades then
+            if not p.grenades or #p.grenades == 0 then
                 p:msg(Color.white.."You don't have any grenades!")
+            end
+
+            if #p.grenades == 1 and p.mouse then
+                local distx = p.x-p.mouse.x
+                local disty = p.y-p.mouse.y
+                local dist = math.sqrt(distx*distx + disty*disty)
+                local itemtype = p.grenades[item]
+
+                Parse("spawnprojectile", p.id, itemtype, p.x, p.y, dist, p.rot)
+                p.grenades = nil
+                return
             end
 
             local m = p:menu("Throw a grenade")
