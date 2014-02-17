@@ -239,6 +239,7 @@ Hook("buy", function()
 end)
 
 Hook("leave", function(p)
+    p:save_data()
     p.body = nil
     p.info = nil
     p.karma = nil

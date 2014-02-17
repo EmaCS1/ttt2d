@@ -230,6 +230,12 @@ function Player.mt:load_data()
     local data = f:read()
 
     if type(data) ~= 'table' then
+        Timer(3000, function()
+            self:msg(Color.white .. "Welcome to the server ".. Color.innocent .. self.name .. Color.white .. "!@C")
+        end)
+        Timer(5000, function()
+            self:msg(Color.white .. "If you are new to this gamemode please read " .. Color.traitor .. "F1!@C")
+        end)
         return
     end
 
@@ -240,12 +246,12 @@ function Player.mt:load_data()
     if self.karma < Karma.reset then
         self.karma = Karma.reset
         Timer(5000, function()
-            self:notify("Please don't let your karma drop next time!@C")
+            self:msg(Color.traitor .. "Karma reset! Please don't let your karma drop next time!@C")
         end)
     end
 
     Timer(3000, function()
-        self:notify("Welcome back, " .. self.name .. "!@C")
+        self:msg(Color.white .. "Welcome back " .. Color.innocent .. self.name .. Color.white ..  "!@C")
     end)
 end
 -- }}}

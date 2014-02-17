@@ -1,25 +1,30 @@
 ©220020020TTT - Trouble in Terrorist Town
 
-©255255255 Do not kill people without a reason!
+©255100100Do not kill people without a reason (RDM)!
 
 ©150150150  It's all about Traitor versus Innocent
 ©255255255Every round a small group of Traitors is randomly picked. Together they have to kill all the Innocent. However the Innocent do not know who is a Traitor and who isn't. You can trust nobody.
 
 ©150150150  Karma
-©255255255Your score on scoreboard is your karma and it tells you how well you play. If you let your karma drop below 1000, you'll get punished e.g. your damage towards other players is reduced. If your karma drops below 500, you'll get banned for 5 minutes.
+©255255255The score on scoreboard represends your karma which tells you how well you play. Low karma is bad for you; you make less damage and earn less points.
+©255255255Don't let your karma drop below 500 or you'll be banned for 5 minutes.
 
-©150150150  Useful facts
+©150150150  Gameplay
+©255255255- As innocent, try to survive
+©255255255- As traitor, kill every innocent
 ©255255255- Search corpes by pressing E on them
-©255255255- Voting costs you 100 karma
+©255255255- Open traitor/detective shop by pressing F2
 ©255255255- Rewards/penalties depend on victim's karma
+©255255255- Voting costs 100 karma
 ©255255255- Traitors can use team chat
 ©255255255- Auto complete: @li translates to Livia
 
-©120220120This gamemode is open source:
-»http://unrealsoftware.de/forum_posts.php?post=362137«
+©120220120Contribute?
+©255255255- Source code & issues: »https://github.com/tarjoilija/ttt2d«
+©255255255- OLD forum thread »http://unrealsoftware.de/forum_posts.php?post=362137«
 
 ©150150150  TODO
-©255255255- Traitor and detective items
-©255255255- More maps
-©255255255- Point system
+©255255255- Special items
+©255255255- Maps
+©255255255- Improve point system
 ©255255255- You tell me
