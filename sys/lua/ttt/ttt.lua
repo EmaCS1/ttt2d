@@ -454,7 +454,13 @@ TTT.round_end = function(winner)
 
     Player.each(function(p)
         if p.info and p.info.killer_cname then
-            p:msg(Color.white .. "You were killed by " .. p.info.killer_cname)
+            local txt =
+            local txt = Color.white .. "You were killed by " .. p.info.killer_cname
+            local wpn = itemtype(p.info.killer_wpn, "name")
+            if wpn then
+                txt = txt .. Color.white .. " using " .. wpn
+            end
+            p:msg(txt)
         end
     end)
 
