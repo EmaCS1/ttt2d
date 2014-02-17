@@ -269,10 +269,13 @@ TTT.traitorshop = {
     {1, "USP"},
     {4, "M4A1"},
     {4, "Armor"},
-    {10, "Stealth Suit"}
+    {10, "Stealth Suit"},
+    {1, "Smoke Grenade"},
+    {2, "HE Grenade"}
 }
 TTT.detectiveshop = {
     {1, "Medikit"},
+    {1, "Flare"},
     {2, "Armor"},
     {5, "Tactical Shield"}
 }
@@ -313,6 +316,10 @@ Hook("serveraction", function(p, action)
                 elseif item == 4 then
                     p:equip(84)
                     p.has_armor = true
+                elseif item == 5 then
+                    p:equip(53)
+                elseif item == 6 then
+                    p:equip(51)
                 end
 
                 p.points_used = p.points_used + price
@@ -345,9 +352,11 @@ Hook("serveraction", function(p, action)
                 if item == 1 then
                     Parse("spawnitem", 64, p.tilex, p.tiley)
                 elseif item == 2 then
+                    p:equip(54)
+                elseif item == 3 then
                     p:equip(79)
                     p.has_armor = true
-                elseif item == 3 then
+                elseif item == 4 then
                     p:equip(41)
                 end
 
