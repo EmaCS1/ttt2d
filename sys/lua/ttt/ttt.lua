@@ -106,7 +106,6 @@ Hook("spawn", function(p)
 end)
 
 Hook("die", function(p)
-
     if p:is_mia() then
         p:spawn(p.x, p.y)
 
@@ -150,6 +149,12 @@ Hook("hit", function(victim, p, wpn, hpdmg, apdmg, rawdmg)
     return 1
 end)
 
+Hook("endround", function(reason)
+    Player.each(function(p)
+        p:set_spectator()
+    end)
+end)
+
 Hook("use", function(p)
     Player.each(function(p2)
         if not p2.info then -- if player doesn't have a corpse
@@ -164,20 +169,9 @@ Hook("use", function(p)
             return
         end
 
+
         if info.found then
             p:msg(Color.white.."This body belongs to "..info.cname)
-
-            if p:is_detective() then
-                local time = os.time()-info.time
-                local txt = Color.detective.."He was killed "..time.." seconds ago"
-                local wpn = itemtype(info.killer_wpn, "name")
-                if wpn then
-                    p:msg(txt.." using "..wpn)
-                else
-                    p:msg(txt)
-                end
-            end
-
         else
             info.found = true
 
@@ -188,6 +182,17 @@ Hook("use", function(p)
                 msg(Color.detective..p.name..Color.white.." found the body of "..info.cname.."@C")
             else
                 msg(Color.innocent..p.name..Color.white.." found the body of "..info.cname.."@C")
+            end
+        end
+
+        if p:is_detective() then
+            local time = os.time()-info.time
+            local txt = Color.detective.."He was killed "..time.." seconds ago"
+            local wpn = itemtype(info.killer_wpn, "name")
+            if wpn then
+                p:msg(txt.." using "..wpn)
+            else
+                p:msg(txt)
             end
         end
 
