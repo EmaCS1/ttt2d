@@ -396,7 +396,7 @@ Hook("serveraction", function(p, action)
                 p:msg(Color.white.."You don't have any grenades!")
             end
 
-            if #p.grenades == 1 and p.mouse then
+            if p.grenades and #p.grenades == 1 and p.mouse then
                 local distx = p.x-p.mouse.x
                 local disty = p.y-p.mouse.y
                 local dist = math.sqrt(distx*distx + disty*disty)
