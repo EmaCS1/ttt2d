@@ -158,6 +158,18 @@ Hook("endround", function(reason)
     end)
 end)
 
+Hook("ms100", function()
+    Player.each(function(p)
+        p:reqcld(2)
+    end)
+end)
+
+Hook("clientdata", function(p, mode, x, y)
+    if mode == 2 then
+        p.mouse = {x=x, y=y}
+    end
+end)
+
 Hook("use", function(p)
     Player.each(function(p2)
         if not p2.info then -- if player doesn't have a corpse
@@ -317,9 +329,15 @@ Hook("serveraction", function(p, action)
                     p:equip(84)
                     p.has_armor = true
                 elseif item == 5 then
-                    p:equip(53)
+                    if not p.grenades then
+                        p.grenades = {}
+                    end
+                    table.insert(p.grenades, 53)
                 elseif item == 6 then
-                    p:equip(51)
+                    if not p.grenades then
+                        p.grenades = {}
+                    end
+                    table.insert(p.grenades, 51)
                 end
 
                 p.points_used = p.points_used + price
@@ -352,7 +370,10 @@ Hook("serveraction", function(p, action)
                 if item == 1 then
                     Parse("spawnitem", 64, p.tilex, p.tiley)
                 elseif item == 2 then
-                    p:equip(54)
+                    if not p.grenades then
+                        p.grenades = {}
+                    end
+                    table.insert(p.grenades, 54)
                 elseif item == 3 then
                     p:equip(79)
                     p.has_armor = true
@@ -363,6 +384,39 @@ Hook("serveraction", function(p, action)
                 p.points_used = p.points_used + price
                 p:msg(Color.white.."You bought "..TTT.detectiveshop[item][2])
             end)
+        end
+    elseif TTT.state == S_RUNNING and action == 2 then
+        if p:is_traitor() or p:is_detective() then
+            if not p.grenades then
+                p:msg(Color.white.."You don't have any grenades!")
+            end
+
+            local m = p:menu("Throw a grenade")
+
+            for k,v in pairs(p.grenades) do
+                b:button(k, itemtype(v, "name"))
+            end
+
+            m:bind(function(p, item, label)
+                if not p.grenades or not p.grenades[item] then
+                    return
+                end
+
+                if not p.mouse then
+                    p:msg("Can't find your mouse location")
+                    return
+                end
+
+                local distx = p.x-p.mouse.x
+                local disty = p.y-p.mouse.y
+                local dist = math.sqrt(distx*distx + disty*disty)
+                local itemtype = p.grenades[item]
+
+                Parse("spawnprojectile", p.id, itemtype, p.x, p.y, dist, p.rot)
+
+                table.remove(p.grenades, item)
+            end)
+
         end
     end
 end)
