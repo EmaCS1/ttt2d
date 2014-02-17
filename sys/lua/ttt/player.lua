@@ -82,6 +82,8 @@ function Player.mt:set_mia(killer)
         color = self:get_color(),
 
         killer = killer,
+        killer_x = killer.x,
+        killer_y = killer.y,
         killer_name = killer.name,
         killer_cname = killer:c_name(),
         killer_role = killer.role,
