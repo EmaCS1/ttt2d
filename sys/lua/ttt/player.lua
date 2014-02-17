@@ -32,7 +32,7 @@ function Player.mt:set_traitor()
     Hud.draw_role(self)
 
     Timer(3000, function()
-        p:notify("Press F2 to access Traitor Shop!")
+        self:notify("Press F2 to access Traitor Shop!")
     end)
 end
 
@@ -46,7 +46,7 @@ function Player.mt:set_detective()
     Hud.draw_role(self)
 
     Timer(3000, function()
-        p:notify("Press F2 to access Detective Shop!")
+        self:notify("Press F2 to access Detective Shop!")
     end)
 end
 
