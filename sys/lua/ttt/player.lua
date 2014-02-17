@@ -206,7 +206,7 @@ function Player.mt:save_data()
         karma = self.karma,
         playtime = self.playtime,
         points = self.points,
-        poinst_used = self.points_used,
+        points_used = self.points_used,
         rank = self.rank
     })
 end
