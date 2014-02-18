@@ -471,7 +471,10 @@ TTT.round_end = function(winner)
     end
 
     -- tell killers etc
-    if TTT.traitors_cname then
+    if TTT.traitor_round then
+        msg(Color.white .. "Everyone was a traitor!")
+
+    elseif TTT.traitors_cname then
         if #TTT.traitors_cname == 1 then
             msg(TTT.traitors_cname[1] .. Color.white .. " was the only traitor.")
         else
@@ -555,7 +558,11 @@ TTT.spawn_items = function()
         Timer(i*100, function()
             local pos = Walk.random()
             local wpn = wpnlist1[math.random(#wpnlist1)]
-            Parse("spawnitem", wpn, pos.x, pos.y)
+            if math.random(1000) == 42 then
+                Parse("spawnitem", 30, pos.x, pos.y)
+            else
+                Parse("spawnitem", wpn, pos.x, pos.y)
+            end
         end)
     end
 
@@ -602,7 +609,8 @@ TTT.select_teams = function()
     local t_num = math.ceil(#players / 6)
     local d_num = math.floor(#players / 9)
 
-    if #Player.table < 4 then
+    if #Player.table < 4 or TTT.fun then
+        TTT.fun = nil
         TTT.traitor_round = true
         t_num = #players
         d_num = 0

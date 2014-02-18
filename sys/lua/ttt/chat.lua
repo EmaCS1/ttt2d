@@ -202,6 +202,10 @@ Chat.add_command("vote", "Begin map voting", RANK_MODERATOR, function(p, arg)
     TTT.vote_map()
 end)
 
+Chat.add_command("fun", "Set next round traitor only", RANK_MODERATOR, function(p, arg)
+    TTT.fun = true
+end)
+
 Chat.add_command("make_moderator", "Make moderator", RANK_ADMIN, function(p, arg)
     local id = tonumber(arg)
     if not Player(id) or not Player(id).exists then
