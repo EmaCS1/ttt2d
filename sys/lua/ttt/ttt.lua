@@ -172,7 +172,8 @@ end)
 
 Hook("clientdata", function(p, mode, x, y)
     if not p or p == 0 then
-        print("Failed to get client data! Player ID is 0?")
+        print("Failed to get client data! Player ID is invalid")
+        return
     end
 
     if mode == 2 then
