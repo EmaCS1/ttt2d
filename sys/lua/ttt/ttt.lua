@@ -291,7 +291,9 @@ Hook("second", function()
             local mapname = nil
             local votes = 0
             for k,v in pairs(TTT.vote_result) do
+                print("voteresult " .. k .. " " .. v)
                 if v > votes then
+                    print("chosen")
                     votes = v
                     mapname = k
                 end
