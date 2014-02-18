@@ -201,7 +201,9 @@ Player.save_table = {
     playtime = {"number", 0},
     points = {"number", 0},
     points_used = {"number", 0},
-    rank = {"number", 0}
+    rank = {"number", 0},
+    bans = {"number", 0},
+    teamkills = {"number", 0}
 }
 
 function Player.mt:save_data()

@@ -85,6 +85,7 @@ function Karma.killed(attacker, victim)
 
         Karma.give_penalty(attacker, penalty)
         attacker.karma_clean = false
+        attacker.teamkills = attacker.teamkills + 1
     end
 end
 
@@ -103,11 +104,14 @@ function Karma.round_end(winner)
         end
 
         if p.karma < Karma.kick then
+            p.bans = p.bans + 1
+            p:save_data()
             if p.usgn == 0 then
                 p:banip(5, "Your karma went too low. Banned for 5 minutes!")
             else
                 p:banusgn(5, "Your karma went too low. Banned for 5 minutes!")
             end
+            return
         end
 
         p.score = p.karma

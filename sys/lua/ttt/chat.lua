@@ -144,13 +144,6 @@ Chat.add_command("commands", "Show commands available", RANK_GUEST, function(p, 
     end
 end)
 
-Chat.add_command("smoke", "Give smoke grenade", RANK_MODERATOR, function(p, arg)
-    local id = tonumber(arg)
-    if id then
-        TTT.give_grenade(p, id)
-    end
-end)
-
 Chat.add_command("map", "Change map", RANK_MODERATOR, function(p, arg)
     Parse('map', arg)
 end)
@@ -182,11 +175,29 @@ Chat.add_command("ban", "Ban player for 6 hours", RANK_MODERATOR, function(p, ar
         p:msg(Color.traitor .. "Player with that ID doesn't exist")
         return
     end
+    Player(id).bans = Player(id).bans + 1
+    Player(id):save_data()
+
     if Player(id).usgn == 0 then
         Player(id):banip(6*60, "Banned by " .. p.name)
     else
         Player(id):banusgn(6*60, "Banned by " .. p.name)
     end
+end)
+
+Chat.add_command("stats", "View player stats", RANK_MODERATOR, function(p, arg)
+    local id = tonumber(arg)
+    if not Player(id) or not Player(id).exists then
+        p:msg(Color.traitor .. "Player with that ID doesn't exist")
+        return
+    end
+
+    p:msg(Color.white .. "Statistics for " .. Player(id):c_name())
+    p:msg(Color.white .. "Points: " .. Player(id).points)
+    p:msg(Color.white .. "Points used: " .. Player(id).points_used)
+    p:msg(Color.white .. "Bans: " .. Player(id).bans)
+    p:msg(Color.white .. "Teamkills: " .. Player(id).teamkills)
+    p:msg(Color.white .. "Playtime: " .. Player(id).playtime)
 end)
 
 Chat.add_command("kick", "Kick player", RANK_MODERATOR, function(p, arg)
@@ -204,6 +215,14 @@ end)
 
 Chat.add_command("fun", "Set next round traitor only", RANK_MODERATOR, function(p, arg)
     TTT.fun = true
+end)
+
+Chat.add_command("report", "Send message to the admins", RANK_GUEST, function(p, arg)
+    Player.each(function(p2)
+        if p2.rank >= RANK_MODERATOR then
+            p2:msg(Color.traitor .. "[REPORT]" .. p:c_name() .. Color.white .. arg)
+        end
+    end)
 end)
 
 Chat.add_command("make_moderator", "Make moderator", RANK_ADMIN, function(p, arg)
