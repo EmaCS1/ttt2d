@@ -273,6 +273,7 @@ Hook("second", function()
         if TTT.traitor_round then
             if traitors == 1 then
                 msg(Color.white.."Only one traitor left! He won!@C")
+                TTT.round_end(R_TRAITOR)
             end
         else
             if traitors == 0 then

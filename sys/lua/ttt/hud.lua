@@ -99,7 +99,7 @@ function Hud.mark_players()
             img:color(50, 50, 250)
 
         elseif p:is_traitor() then
-            if TTT.traitor_round then
+            if not TTT.traitor_round then
                 for _,p2 in pairs(TTT.traitors) do
                     local img = Image("gfx/shadow.bmp<a>", 2, 0, p.id+100, p2.id)
                     img:scale(1.8, 1.8)
