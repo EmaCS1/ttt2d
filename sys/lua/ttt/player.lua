@@ -218,11 +218,11 @@ function Player.mt:save_data()
     local tbl = {}
     for key,v in pairs(Player.save_table) do
         local value = self[key]
-        if value and type(value) == v[2] then
+        if value and type(value) == v[1] then
             tbl[key] = value
         else
             print("Failed to save " .. key .. " for player " .. self.id .. ", using default value")
-            tbl[key] = v[3]
+            tbl[key] = v[2]
         end
     end
 
