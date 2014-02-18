@@ -54,6 +54,12 @@ Hook("startround", function()
     TTT.round_started = os.time()
     TTT.round_count = TTT.round_count+1
 
+    if TTT.round_count > 15 then
+        Timer(5000, function()
+            TTT.vote_map()
+        end)
+    end
+
     TTT.state = S_PREPARING
 
     Player.each(function(p)
