@@ -217,7 +217,7 @@ function Player.mt:save_data()
 
     local tbl = {}
     for _,v in pairs(Player.save_table) do
-        local value = p[v[1]]
+        local value = self[v[1]]
         if value and type(value) == v[2] then
             tbl[v[1]] = value
         else
@@ -230,7 +230,7 @@ function Player.mt:save_data()
 end
 
 function Player.mt:load_data()
-    print("Load player data " .. p.usgn)
+    print("Load player data " .. self.usgn)
     if self.usgn == 0 then
         self.karma = Karma.player_base
         Timer(3000, function()

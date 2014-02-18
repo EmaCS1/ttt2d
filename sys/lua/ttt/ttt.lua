@@ -170,7 +170,7 @@ Hook("ms100", function()
 end)
 
 Hook("clientdata", function(p, mode, x, y)
-    if p == 0 then
+    if not p or p == 0 then
         print("Failed to get client data! Player ID is 0?")
     end
 
