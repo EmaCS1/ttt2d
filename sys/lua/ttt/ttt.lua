@@ -92,9 +92,7 @@ Hook("join", function(p)
         p.hud = {}
     end
 
-    if TTT.state == S_PREPARING then
-        p:set_spectator()
-    end
+    p:set_spectator()
 end)
 
 Hook("spawn", function(p)
