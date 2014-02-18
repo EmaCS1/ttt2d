@@ -196,11 +196,11 @@ function Player.mt:reset_data()
 end
 
 Player.save_table = {
-    karma = {"number", Karma.base},
+    karma = {"number", 1000},
     playtime = {"number", 0},
     points = {"number", 0},
     points_used = {"number", 0},
-    rank = {"number", RANK_GUEST},
+    rank = {"number", 0},
     bans = {"number", 0},
     teamkills = {"number", 0}
 }
