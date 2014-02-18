@@ -404,6 +404,7 @@ Hook("serveraction", function(p, action)
 
                 Parse("spawnprojectile", p.id, itemtype, p.x, p.y, dist, p.rot)
                 p.grenades = nil
+                msg("fire in the hole")
                 return
             end
 
