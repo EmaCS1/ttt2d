@@ -34,6 +34,7 @@ Walk.scan() -- scan walkable tiles
 TTT.state = S_WAITING
 TTT.round_started = os.time()
 TTT.round_count = 0
+TTT.traitor_round = false
 
 -- fix bots
 for i=1,32 do
@@ -496,6 +497,10 @@ TTT.spawn_items = function()
 end
 
 TTT.notify_teams = function()
+    if TTT.traitor_round then
+        return
+    end
+
     Player.each(function(p)
         if p:is_detective() then
             msg(p:c_name()..Color.white.." is detective.")
@@ -524,6 +529,14 @@ TTT.select_teams = function()
     local players = Player.tableliving
     local t_num = math.ceil(#players / 6)
     local d_num = math.floor(#players / 9)
+
+    if #Player.table < 4 then
+        TTT.traitor_round = true
+        t_num = #players
+        d_num = 0
+    else
+        TTT.traitor_round = false
+    end
 
     -- remove mias from list
     for k,p in pairs(players) do

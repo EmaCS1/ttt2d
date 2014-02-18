@@ -10,7 +10,7 @@ function Karma.get_kill_reward()
 end
 
 function Karma.give_reward(p, value)
-    if #Player.table < Karma.min_players then
+    if #Player.table < Karma.min_players or TTT.traitor_round then
         return
     end
 
@@ -23,7 +23,7 @@ function Karma.give_reward(p, value)
 end
 
 function Karma.give_points(p, value)
-    if #Player.table < Karma.min_players then
+    if #Player.table < Karma.min_players or TTT.traitor_round then
         return
     end
 
@@ -49,7 +49,7 @@ function Karma.get_kill_penalty(victim_karma)
 end
 
 function Karma.give_penalty(p, value)
-    if #Player.table < Karma.min_players then
+    if #Player.table < Karma.min_players or TTT.traitor_round then
         return
     end
     p.karma = math.max(p.karma-value, 0)
