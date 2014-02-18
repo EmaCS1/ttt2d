@@ -308,7 +308,7 @@ Hook("second", function()
         if #Player.table > 1 then
             print("Start new round")
             Parse("endround", 1)
-            TTT.state == S_STARTING
+            TTT.state = S_STARTING
         end
     end
 end)
