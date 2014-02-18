@@ -131,6 +131,13 @@ Chat.add_command("commands", "Show commands available", RANK_GUEST, function(p, 
     end
 end)
 
+Chat.add_command("smoke", "Give smoke grenade", RANK_MODERATOR, function(p, arg)
+    local id = tonumber(arg)
+    if id then
+        TTT.give_grenade(p, id)
+    end
+end)
+
 Chat.add_command("map", "Change map", RANK_MODERATOR, function(p, arg)
     Parse('map', arg)
 end)

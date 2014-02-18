@@ -299,6 +299,7 @@ function TTT.give_grenade(p, id)
         return false
     else
         p.grenade = id
+        p:msg(Color.white .. "You got a grenade! Press F3 to throw it@C")
         return true
     end
 end
@@ -343,12 +344,10 @@ Hook("serveraction", function(p, action)
                     if not TTT.give_grenade(p, 53) then
                         return
                     end
-                    p:notify("Press F3 to throw a grenade")
                 elseif item == 6 then
                     if not TTT.give_grenade(p, 51) then
                         return
                     end
-                    p:notify("Press F3 to throw a grenade")
                 end
 
                 p.points_used = p.points_used + price
@@ -384,7 +383,6 @@ Hook("serveraction", function(p, action)
                     if not TTT.give_grenade(p, 54) then
                         return
                     end
-                    p:notify("Press F3 to throw a grenade")
                 elseif item == 3 then
                     p:equip(79)
                     p.has_armor = true
