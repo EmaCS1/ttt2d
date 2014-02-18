@@ -133,6 +133,13 @@ Hook("spawn", function(p)
 
         p.damagefactor = math.max(p.damagefactor, 0.1)
         p.speedmod = (p.karma-Karma.base)/(Karma.base/Karma.speedmod)
+
+        if p.karma < 700 then
+            p:msg(Color.traitor .. "LOW KARMA WARNING!@C")
+            Timer(500, function()
+                p:msg(Color.traitor .. "If your karma drops below 500 you'll get banned for 5 minutes!@C")
+            end)
+        end
     end)
 end, -100)
 

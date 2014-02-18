@@ -64,11 +64,20 @@ end
 function Chat.traitor_message(p, message)
     local players = Player.table
 
-    for _,recv in pairs(players) do
-        if recv:is_traitor() then
-            recv:msg(Chat.format(p, message))
-        else
-            recv:msg(Chat.format(p, message, R_INNOCENT))
+    if not TTT.traitor_round then
+        for _,recv in pairs(players) do
+            if recv:is_traitor() then
+                recv:msg(Chat.format(p, message))
+            else
+                recv:msg(Chat.format(p, message, R_INNOCENT))
+            end
+        end
+    else
+        p:msg(Chat.format(p, message))
+        for _,recv in pairs(players) do
+            if recv ~= p then
+                recv:msg(Chat.format(p, message, R_INNOCENT))
+            end
         end
     end
 end
@@ -76,10 +85,14 @@ end
 function Chat.traitor_message_team(p, message)
     local players = Player.table
 
-    for _,recv in pairs(players) do
-        if recv:is_traitor() then
-            recv:msg("(TRAITORS) " .. Chat.format(p, message))
+    if not TTT.traitor_round then
+        for _,recv in pairs(players) do
+            if recv:is_traitor() then
+                recv:msg("(TRAITORS) " .. Chat.format(p, message))
+            end
         end
+    else
+       p:msg("(TRAITORS) " .. Chat.format(p, message))
     end
 end
 
