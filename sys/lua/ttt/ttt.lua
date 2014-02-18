@@ -270,14 +270,20 @@ Hook("second", function()
             end
         end)
 
-        if traitors == 0 then
-            msg(Color.white.."All traitors are gone!"..Color.innocent.." Innocent won!@C")
-            TTT.round_end(R_INNOCENT)
+        if TTT.traitor_round then
+            if traitors == 1 then
+                msg(Color.white.."Only one traitor left! He won!@C")
+            end
+        else
+            if traitors == 0 then
+                msg(Color.white.."All traitors are gone!"..Color.innocent.." Innocent won!@C")
+                TTT.round_end(R_INNOCENT)
 
-        elseif innocent == 0 then
-            msg(Color.traitor.."Traitors"..Color.white.." won!@C")
-            TTT.round_end(R_TRAITOR)
+            elseif innocent == 0 then
+                msg(Color.traitor.."Traitors"..Color.white.." won!@C")
+                TTT.round_end(R_TRAITOR)
 
+            end
         end
 
     elseif TTT.state == S_WAITING then
