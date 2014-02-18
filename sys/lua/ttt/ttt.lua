@@ -93,8 +93,6 @@ Hook("join", function(p)
     end
 
     if TTT.state == S_PREPARING then
-        p:set_preparing()
-    else
         p:set_spectator()
     end
 end)
@@ -336,7 +334,9 @@ Hook("serveraction", function(p, action)
             end
 
             m:bind(function(p, item, label)
-                if not p:is_traitor() or TTT.state ~= S_RUNNING or not TTT.traitorshop[item] then
+                if not TTT.traitorshop[item] then
+                    return
+                elseif not p:is_traitor() or TTT.state ~= S_RUNNING then
                     p:msg(Color.white.."You can't buy Traitor Shop items right now.")
                     return
                 end
@@ -383,7 +383,9 @@ Hook("serveraction", function(p, action)
             end
 
             m:bind(function(p, item, label)
-                if not p:is_detective() or TTT.state ~= S_RUNNING or not TTT.detectiveshop[item] then
+                if not TTT.detectiveshop[item] then
+                    return
+                elseif not p:is_detective() or TTT.state ~= S_RUNNING then
                     p:msg(Color.white.."You can't buy Detective Shop items right now.")
                     return
                 end
