@@ -315,12 +315,14 @@ end)
 
 TTT.traitorshop = {
     {1, "USP"},
+    {1, "Smoke Grenade"},
+    {2, "HE Grenade"},
     {4, "M4A1"},
     {4, "Armor"},
     {10, "Stealth Suit"},
-    {1, "Smoke Grenade"},
-    {2, "HE Grenade"}
+    {10, "Rocket"}
 }
+
 TTT.detectiveshop = {
     {1, "Medikit"},
     {1, "Flare"},
@@ -369,19 +371,23 @@ Hook("serveraction", function(p, action)
                 if item == 1 then
                     p:equip(1)
                 elseif item == 2 then
-                    p:equip(32)
-                elseif item == 3 then
-                    p:equip(79)
-                    p.has_armor = true
-                elseif item == 4 then
-                    p:equip(84)
-                    p.has_armor = true
-                elseif item == 5 then
                     if not TTT.give_grenade(p, 53) then
                         return
                     end
-                elseif item == 6 then
+                elseif item == 3 then
                     if not TTT.give_grenade(p, 51) then
+                        return
+                    end
+                elseif item == 4 then
+                    p:equip(32)
+                elseif item == 5 then
+                    p:equip(79)
+                    p.has_armor = true
+                elseif item == 6 then
+                    p:equip(84)
+                    p.has_armor = true
+                elseif item == 7 then
+                    if not TTT.give_grenade(p, 47) then
                         return
                     end
                 end
