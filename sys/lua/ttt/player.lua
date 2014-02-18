@@ -188,20 +188,19 @@ end
 
 -- {{{ Data handling
 function Player.mt:reset_data()
-    self.karma = Karma.base
-    self.playtime = 0
     self.savetime = os.time()
-    self.points = 0
-    self.points_used = 0
-    self.rank = RANK_GUEST
+
+    for key,v in pairs(Player.save_table) do
+        self[key] = v[2]
+    end
 end
 
 Player.save_table = {
-    karma = {"number", 1000},
+    karma = {"number", Karma.base},
     playtime = {"number", 0},
     points = {"number", 0},
     points_used = {"number", 0},
-    rank = {"number", 0},
+    rank = {"number", RANK_GUEST},
     bans = {"number", 0},
     teamkills = {"number", 0}
 }
