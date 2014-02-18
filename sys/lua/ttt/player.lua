@@ -196,6 +196,14 @@ function Player.mt:reset_data()
     self.rank = RANK_GUEST
 end
 
+Player.save_table = {
+    {"karma", "number", 1000},
+    {"playtime", "number", 0},
+    {"points", "number", 0},
+    {"points_used", "number", 0},
+    {"rank", "number", 0}
+}
+
 function Player.mt:save_data()
     if self.usgn == 0 then
         return
@@ -206,16 +214,23 @@ function Player.mt:save_data()
     self.savetime = timenow
 
     local f = File('sys/lua/ttt/saves/' .. self.usgn .. '.txt')
-    f:write({
-        karma = self.karma,
-        playtime = self.playtime,
-        points = self.points,
-        points_used = self.points_used,
-        rank = self.rank
-    })
+
+    local tbl = {}
+    for _,v in pairs(Player.save_table) do
+        local value = p[v[1]]
+        if value and type(value) == v[2] then
+            tbl[v[1]] = value
+        else
+            print("Failed to save " .. key .. " for player " .. self.id .. ", using default value")
+            tbl[v[1]] = v[3]
+        end
+    end
+
+    f:write(tbl)
 end
 
 function Player.mt:load_data()
+    print("Load player data " .. p.usgn)
     if self.usgn == 0 then
         self.karma = Karma.player_base
         Timer(3000, function()
@@ -240,7 +255,14 @@ function Player.mt:load_data()
     end
 
     for k,v in pairs(data) do
-        self[k] = v
+        if not Player.save_table[k] then
+            print("Loaded unused data " .. k .. " for player " .. self.id .. ", skipping")
+        elseif type(v) ~= Player.save_table[k][2] then
+            print("Loaded data in wrong type for player " .. self.id ..": " .. Player.save_table[k][2] .. " expected but got " .. type(v))
+            self[k] = Player.save_table[k][3]
+        else
+            self[k] = v
+        end
     end
 
     if self.karma < Karma.reset then

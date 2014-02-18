@@ -78,6 +78,10 @@ Hook("startround", function()
 end)
 
 Hook("join", function(p)
+    if p == 0 then
+        print("Join hook failed! Player ID is 0?")
+    end
+
     print(Color.traitor.."TTT join")
     p.joined = os.time()
     p:reset_data()
@@ -166,6 +170,10 @@ Hook("ms100", function()
 end)
 
 Hook("clientdata", function(p, mode, x, y)
+    if p == 0 then
+        print("Failed to get client data! Player ID is 0?")
+    end
+
     if mode == 2 then
         p.mouse = {x=x, y=y}
     end
