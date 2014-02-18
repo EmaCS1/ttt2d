@@ -193,7 +193,7 @@ Chat.add_command("stats", "View player stats", RANK_MODERATOR, function(p, arg)
     end
 
     p:msg(Color.white .. "Statistics for " .. Player(id):c_name())
-    p:msg(Color.white .. "Points: " .. Player(id).points)
+    p:msg(Color.white .. "Points: " .. math.floor(Player(id).points))
     p:msg(Color.white .. "Points used: " .. Player(id).points_used)
     p:msg(Color.white .. "Bans: " .. Player(id).bans)
     p:msg(Color.white .. "Teamkills: " .. Player(id).teamkills)
@@ -220,7 +220,7 @@ end)
 Chat.add_command("report", "Send message to the admins", RANK_GUEST, function(p, arg)
     Player.each(function(p2)
         if p2.rank >= RANK_MODERATOR then
-            p2:msg(Color.traitor .. "[REPORT]" .. p:c_name() .. Color.white .. arg)
+            p2:msg(Color.traitor .. "[REPORT] " .. p:c_name() .. Color.white .. ": " .. arg)
         end
     end)
 end)
