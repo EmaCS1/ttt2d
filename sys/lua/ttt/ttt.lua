@@ -59,7 +59,7 @@ Hook("startround", function()
         if p.health > 0 then
             p.weapons = {50}
         end
-        p.grenades = nil
+        p.grenade = nil
 
         p:set_preparing()
     end)
@@ -294,6 +294,15 @@ TTT.detectiveshop = {
     {5, "Tactical Shield"}
 }
 
+function TTT.give_grenade(p, id)
+    if p.grenade then
+        return false
+    else
+        p.grenade = id
+        return true
+    end
+end
+
 Hook("serveraction", function(p, action)
     if TTT.state == S_RUNNING and action == 1 then
         if p:is_traitor() then
@@ -331,16 +340,14 @@ Hook("serveraction", function(p, action)
                     p:equip(84)
                     p.has_armor = true
                 elseif item == 5 then
-                    if not p.grenades then
-                        p.grenades = {}
+                    if not TTT.give_grenade(p, 53) then
+                        return
                     end
-                    table.insert(p.grenades, 53)
                     p:notify("Press F3 to throw a grenade")
                 elseif item == 6 then
-                    if not p.grenades then
-                        p.grenades = {}
+                    if not TTT.give_grenade(p, 51) then
+                        return
                     end
-                    table.insert(p.grenades, 51)
                     p:notify("Press F3 to throw a grenade")
                 end
 
@@ -374,10 +381,9 @@ Hook("serveraction", function(p, action)
                 if item == 1 then
                     Parse("spawnitem", 64, p.tilex, p.tiley)
                 elseif item == 2 then
-                    if not p.grenades then
-                        p.grenades = {}
+                    if not TTT.give_grenade(p, 54) then
+                        return
                     end
-                    table.insert(p.grenades, 54)
                     p:notify("Press F3 to throw a grenade")
                 elseif item == 3 then
                     p:equip(79)
@@ -392,48 +398,17 @@ Hook("serveraction", function(p, action)
         end
     elseif TTT.state == S_RUNNING and action == 2 then
         if p:is_traitor() or p:is_detective() then
-            if not p.grenades or #p.grenades == 0 then
-                p:msg(Color.white.."You don't have any grenades!")
+            if not p.grenade then
+                p:msg(Color.traitor.."You don't have a grenade!")
             end
 
-            if p.grenades and #p.grenades == 1 and p.mouse then
-                local distx = p.x-p.mouse.x
-                local disty = p.y-p.mouse.y
-                local dist = math.sqrt(distx*distx + disty*disty)
-                local itemtype = p.grenades[item]
+            local distx = p.x-p.mouse.x
+            local disty = p.y-p.mouse.y
+            local dist = math.sqrt(distx*distx + disty*disty)
+            local itemtype = p.grenade
 
-                Parse("spawnprojectile", p.id, itemtype, p.x, p.y, dist, p.rot)
-                p.grenades = nil
-                msg("fire in the hole")
-                return
-            end
-
-            local m = p:menu("Throw a grenade")
-
-            for k,v in pairs(p.grenades) do
-                m:button(k, itemtype(v, "name"))
-            end
-
-            m:bind(function(p, item, label)
-                if not p.grenades or not p.grenades[item] then
-                    return
-                end
-
-                if not p.mouse then
-                    p:msg("Can't find your mouse location")
-                    return
-                end
-
-                local distx = p.x-p.mouse.x
-                local disty = p.y-p.mouse.y
-                local dist = math.sqrt(distx*distx + disty*disty)
-                local itemtype = p.grenades[item]
-
-                Parse("spawnprojectile", p.id, itemtype, p.x, p.y, dist, p.rot)
-
-                table.remove(p.grenades, item)
-            end)
-
+            Parse("spawnprojectile", p.id, itemtype, p.x, p.y, dist, p.rot)
+            p.grenade = nil
         end
     end
 end)
