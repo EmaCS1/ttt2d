@@ -526,7 +526,7 @@ TTT.vote_map = function()
     for k,v in pairs(TTT.maps) do
         if v ~= Game.sv_map then
             table.insert(menubuttons, {v, v})
-            TTT.vote_result[k] = 0
+            TTT.vote_result[v] = 0
         end
     end
 
