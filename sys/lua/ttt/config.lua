@@ -9,6 +9,7 @@ Color.white = Color(220, 220, 220)
 S_WAITING = 1
 S_PREPARING = 2
 S_RUNNING = 3
+S_STARTING = 4
 
 -- player roles
 R_INNOCENT = 1
@@ -51,5 +52,8 @@ TTT.maps = {
     "ttt_suspicion",
     "ttt_trauma",
     "ttt_dust",
-    "ttt_italy"
+    "ttt_italy",
+    "ttt_alpha_base",
+    "ttt_omega_base",
+    "ttt_countryside"
 }

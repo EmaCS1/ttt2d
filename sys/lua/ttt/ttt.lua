@@ -287,9 +287,28 @@ Hook("second", function()
         end
 
     elseif TTT.state == S_WAITING then
+        if TTT.voter_count > 0 then
+            local mapname = nil
+            local votes = 0
+            for k,v in pairs(TTT.vote_result) do
+                if v > votes then
+                    votes = v
+                    mapname = k
+                end
+            end
+
+            if mapname then
+                Parse("changelevel", mapname)
+            else
+                msg("Map voting failed.")
+                TTT.voter_count = 0
+            end
+        end
+
         if #Player.table > 1 then
             print("Start new round")
             Parse("endround", 1)
+            TTT.state == S_STARTING
         end
     end
 end)
@@ -477,6 +496,47 @@ TTT.round_end = function(winner)
 
     Player.each(function(p)
         p:save_data()
+    end)
+end
+
+TTT.vote_result = {}
+TTT.vote_count = 0
+TTT.voter_count = 0
+TTT.vote_nextmap = nil
+
+TTT.vote_menu = function(p, key, value)
+    TTT.vote_result[key] = TTT.vote_result[key] + 1
+
+    TTT.vote_count = TTT.vote_count + 1
+
+    if TTT.vote_result[key] > TTT.voter_count/2 then
+        msg(Colow.white .. "Next map: " .. key .. "@C")
+        TTT.vote_nextmap = key
+    end
+end
+
+TTT.vote_map = function()
+    msg(Color.white .. "Time to vote next map!@C")
+
+    local menubuttons = {}
+
+    for k,v in pairs(TTT.maps) do
+        if v ~= Game.sv_map then
+            table.insert(menubuttons, {v, v})
+            TTT.vote_result[k] = 0
+        end
+    end
+
+    Timer(1000, function()
+        Player.each(function(p)
+            if p.karma > 700 then
+                local m = p:menu("Vote map")
+                m.buttons = menubuttons
+                m:bind(TTT.vote_menu)
+
+                TTT.voter_count = TTT.voter_count + 1
+            end
+        end)
     end)
 end
 
