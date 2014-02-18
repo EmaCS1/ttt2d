@@ -198,6 +198,10 @@ Chat.add_command("kick", "Kick player", RANK_MODERATOR, function(p, arg)
     Player(id):kick("Kicked by " .. p.name)
 end)
 
+Chat.add_command("vote", "Begin map voting", RANK_MODERATOR, function(p, arg)
+    TTT.vote_map()
+end)
+
 Chat.add_command("make_moderator", "Make moderator", RANK_ADMIN, function(p, arg)
     local id = tonumber(arg)
     if not Player(id) or not Player(id).exists then
