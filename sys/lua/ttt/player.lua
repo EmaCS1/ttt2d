@@ -197,11 +197,11 @@ function Player.mt:reset_data()
 end
 
 Player.save_table = {
-    {"karma", "number", 1000},
-    {"playtime", "number", 0},
-    {"points", "number", 0},
-    {"points_used", "number", 0},
-    {"rank", "number", 0}
+    karma = {"number", 1000},
+    playtime = {"number", 0},
+    points = {"number", 0},
+    points_used = {"number", 0},
+    rank = {"number", 0}
 }
 
 function Player.mt:save_data()
@@ -216,13 +216,13 @@ function Player.mt:save_data()
     local f = File('sys/lua/ttt/saves/' .. self.usgn .. '.txt')
 
     local tbl = {}
-    for _,v in pairs(Player.save_table) do
-        local value = self[v[1]]
+    for key,v in pairs(Player.save_table) do
+        local value = self[key]
         if value and type(value) == v[2] then
-            tbl[v[1]] = value
+            tbl[key] = value
         else
             print("Failed to save " .. key .. " for player " .. self.id .. ", using default value")
-            tbl[v[1]] = v[3]
+            tbl[key] = v[3]
         end
     end
 
@@ -257,9 +257,9 @@ function Player.mt:load_data()
     for k,v in pairs(data) do
         if not Player.save_table[k] then
             print("Loaded unused data " .. k .. " for player " .. self.id .. ", skipping")
-        elseif type(v) ~= Player.save_table[k][2] then
-            print("Loaded data in wrong type for player " .. self.id ..": " .. Player.save_table[k][2] .. " expected but got " .. type(v))
-            self[k] = Player.save_table[k][3]
+        elseif type(v) ~= Player.save_table[k][1] then
+            print("Loaded data in wrong type for player " .. self.id ..": " .. Player.save_table[k][1] .. " expected but got " .. type(v))
+            self[k] = Player.save_table[k][2]
         else
             self[k] = v
         end
