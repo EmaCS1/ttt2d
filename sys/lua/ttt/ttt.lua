@@ -25,6 +25,8 @@ Game.sv_gamemode = 2
 Game.sv_fow = 1
 Game.mp_mapvoteratio = 0
 Game.mp_shotweakening = 100
+
+Parse("mp_wpndmg", "M4A1", 18)
 -- }}}
 
 -- {{{ Initial stuff
