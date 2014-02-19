@@ -197,6 +197,7 @@ end
 
 Player.save_table = {
     karma = {"number", 1000},
+    savename = {"string", "Player"},
     playtime = {"number", 0},
     points = {"number", 0},
     points_used = {"number", 0},
@@ -251,6 +252,7 @@ function Player.mt:load_data()
     local data = f:read()
 
     if type(data) ~= 'table' then
+        self.savename = self.name
         Timer(3000, function()
             self:msg(Color.white .. "Welcome to the server ".. Color.innocent .. self.name .. Color.white .. "!@C")
         end)
@@ -270,6 +272,8 @@ function Player.mt:load_data()
             self[k] = v
         end
     end
+
+    self.name = self.savename
 
     if self.karma < Karma.reset then
         self.karma = Karma.reset

@@ -128,6 +128,18 @@ Hook("die", function(p)
     return 1
 end)
 
+Hook("name", function(p, oldname, newname, forced)
+    if forced then
+        return
+    end
+
+    p.savename = newname
+    p.name = newname
+
+    msg(Color.white .. oldname .. " changed his name to " .. newname)
+    return 1
+end)
+
 Hook("team", function(p, team)
     if not p.change_team then
         return 1
