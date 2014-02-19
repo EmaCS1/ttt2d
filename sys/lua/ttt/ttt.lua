@@ -292,6 +292,12 @@ Hook("second", function()
         end
 
     elseif TTT.state == S_WAITING then
+        if #Player.table > 1 then
+            print("Start new round")
+            Parse("endround", 1)
+            TTT.state = S_STARTING
+        end
+
         if TTT.voter_count > 0 then
             local mapname = nil
             local votes = 0
@@ -305,17 +311,14 @@ Hook("second", function()
             end
 
             if mapname then
-                Parse("changelevel", mapname)
+                msg(Color.white.."Map change!")
+                Timer(2000, function()
+                    Parse("changelevel", mapname)
+                end)
             else
                 msg("Map voting failed.")
                 TTT.voter_count = 0
             end
-        end
-
-        if #Player.table > 1 then
-            print("Start new round")
-            Parse("endround", 1)
-            TTT.state = S_STARTING
         end
     end
 end)
@@ -526,7 +529,7 @@ TTT.vote_menu = function(p, key, value)
     TTT.vote_count = TTT.vote_count + 1
 
     if TTT.vote_result[key] > TTT.voter_count/2 then
-        msg(Colow.white .. "Next map: " .. key .. "@C")
+        msg(Color.white .. "Next map will be: " .. key .. "@C")
         TTT.vote_nextmap = key
     end
 end
