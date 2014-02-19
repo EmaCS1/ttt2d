@@ -259,6 +259,8 @@ function Player.mt:load_data()
         Timer(5000, function()
             self:msg(Color.white .. "If you are new to this gamemode please read " .. Color.traitor .. "F1!@C")
         end)
+
+        msg(Color.spectator .. self.name .. Color.white .. " joined the game for the first time!")
         return
     end
 

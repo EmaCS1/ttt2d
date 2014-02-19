@@ -129,7 +129,6 @@ Hook("die", function(p)
 end)
 
 Hook("name", function(p, oldname, newname, forced)
-    print("name " .. p.id .. "-" .. oldname .. "-" .. newname .. "-" .. forced)
     if forced == 1 then
         return
     end
@@ -143,7 +142,7 @@ Hook("name", function(p, oldname, newname, forced)
         p.savename = newname
         p.name = newname
 
-        msg(Color.white .. oldname .. " changed his name to " .. newname)
+        msg(Color.spectator.. oldname .. Color.white .. " changed his name to " .. Color.spectator .. newname)
     end)
     return 1
 end)
