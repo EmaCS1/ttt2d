@@ -177,7 +177,7 @@ Chat.add_command("reset", "<id>", "Reset player's karma", RANK_ADMIN, function(p
 end)
 
 Chat.add_command("ban", "<id> <duration> <reason>", "Ban player with a reason", RANK_MODERATOR, function(p, arg)
-    local id, duration, reason = string.match(arg, "%d+ %d+ .+")
+    local id, duration, reason = string.match(arg, "(%d+) (%d+) (.+)")
     id = tonumber(id)
     duration = tonumber(duration)
     if not id or not duration or not reason then
