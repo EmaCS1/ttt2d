@@ -108,13 +108,7 @@ function Chat.spectator_message(p, message)
     end
 end
 
-Hook('say', function(p, message)
-    message = Chat.shortcut(message)
-
-    if Chat.command(p, message) then
-        return 1
-    end
-
+function Chat.message(p, message)
     if p:is_traitor() then
         Chat.traitor_message(p, message)
 
@@ -124,6 +118,17 @@ Hook('say', function(p, message)
     else
         msg(Chat.format(p, message))
     end
+end
+
+Hook('say', function(p, message)
+    message = Chat.shortcut(message)
+    print(p.name .. " says: " .. message)
+
+    if Chat.command(p, message) then
+        return 1
+    end
+
+    Chat.message(p, message)
 
     return 1
 end)

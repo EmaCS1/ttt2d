@@ -246,7 +246,29 @@ Hook("drop", function(p)
     end)
 end)
 
-Hook("radio", function()
+Hook("radio", function(p, id)
+    if id == 9 and p.mouse then -- enemy spotted
+        local x = p.mouse.x
+        local y = p.mouse.y
+
+        local dist = 64*64
+        local target = nil
+
+        Player.each_living(function(p2)
+            local diffx = math.abs(p2.x-x)
+            local diffy = math.abs(p2.y-y)
+            local newdist = diffx*diffx + diffy*diffy
+
+            if newdist < dist then
+                target = p2
+                dist = newdist
+            end
+        end)
+
+        if target then
+            Chat.message(p, target.name .. " is TRAITOR!")
+        end
+    end
     return 1
 end)
 
