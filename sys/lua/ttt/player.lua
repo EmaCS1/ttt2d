@@ -201,6 +201,7 @@ Player.save_table = {
     points = {"number", 0},
     points_used = {"number", 0},
     rank = {"number", 0},
+    topkarma = {"number", 1000},
     bans = {"number", 0},
     teamkills = {"number", 0}
 }
@@ -213,6 +214,10 @@ function Player.mt:save_data()
     local timenow = os.time()
     self.playtime = self.playtime + (timenow - self.savetime)
     self.savetime = timenow
+
+    if self.karma > self.topkarma then
+        self.topkarma = self.karma
+    end
 
     local f = File('sys/lua/ttt/saves/' .. self.usgn .. '.txt')
 

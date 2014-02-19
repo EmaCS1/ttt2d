@@ -244,11 +244,24 @@ Chat.add_command("stats", "<id>", "View player stats", RANK_MODERATOR, function(
     local p2 = Player(id)
 
     p:msg(Color.white .. "Statistics for " .. p2:c_name())
+    p:msg(Color.white .. "Rank: " .. p2.rank)
     p:msg(Color.white .. "Points: " .. math.floor(p2.points) - p2.points_used)
-    p:msg(Color.white .. "Points total earned: " .. p2.points)
+    p:msg(Color.white .. "Points total earned: " .. math.floor(p2.points))
     p:msg(Color.white .. "Bans: " .. p2.bans)
     p:msg(Color.white .. "Teamkills: " .. p2.teamkills)
-    p:msg(Color.white .. "Playtime: " .. p2.playtime)
+    local hours = math.floor(p2.playtime/3600)
+    local minutes = math.floor(p2.playtime/60) - hours*60
+    p:msg(Color.white .. "Time played: " .. hours .. "h " .. minutes .. "min")
+    p:msg(Color.white .. "Best karma: " .. p2.topkarma)
+end)
+
+Chat.add_command("status", "", "View your status", RANK_GUEST, function(p, arg)
+    p:msg(Color.white .. "Points: " .. math.floor(p.points) - p.points_used)
+    p:msg(Color.white .. "Points total earned: " .. math.floor(p.points))
+    p:msg(Color.white .. "Best karma: " .. p.topkarma)
+    local hours = math.floor(p.playtime/3600)
+    local minutes = math.floor(p.playtime/60) - hours*60
+    p:msg(Color.white .. "Time played: " .. hours .. "h " .. minutes .. "min")
 end)
 
 Chat.add_command("kick", "<id>", "Kick player", RANK_MODERATOR, function(p, arg)
@@ -296,10 +309,4 @@ Chat.add_command("rank", "<id> <ranknumber>", "Set player rank", RANK_ADMIN, fun
         return
     end
     Player(id).rank = rank
-end)
-
-Chat.add_command("points", "", "Show how many points you got", RANK_GUEST, function(p, arg)
-    local points = math.floor(p.points)
-    p:msg(Color.white.."Points: "..Color.traitor..(points-p.points_used))
-    p:msg(Color.white.." Total earned: "..Color.traitor..points)
 end)
