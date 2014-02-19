@@ -49,6 +49,7 @@ Hook("startround", function()
 
     if #Player.table < 2 then
         print("no enough players")
+        TTT.state = S_WAITING
         return
     end
 
