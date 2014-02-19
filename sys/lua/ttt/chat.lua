@@ -21,7 +21,8 @@ function Chat.shortcut(message)
             local name = word:sub(2):lower()
 
             for _,p in pairs(players) do
-                if string.starts(p.name:lower(), name) then
+                if string.starts(p.name:lower(), name)
+                    or string.find(p.name:lower(), "[^%a]"..Chat.literalize(name)) then
                     message = message:gsub(Chat.literalize(word), p.name)
                 end
             end
