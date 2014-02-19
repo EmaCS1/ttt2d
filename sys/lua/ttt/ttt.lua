@@ -72,6 +72,10 @@ Hook("startround", function()
         end
         p.grenade = nil
 
+        if p.savename ~= p.name then
+            p.name = p.savename
+        end
+
         p:set_preparing()
     end)
 
@@ -130,7 +134,8 @@ end)
 
 Hook("name", function(p, oldname, newname, forced)
     if TTT.state == S_RUNNING then
-        p:msg(Color.traitor .. "You can't change your name while the game is running!")
+        p.savename = newname
+        p:msg(Color.white .. "Your name will be changed on next round!@C")
         return 1
     end
 
@@ -141,9 +146,10 @@ Hook("name", function(p, oldname, newname, forced)
 
             msg(Color.spectator.. oldname .. Color.white .. " changed his name to " .. Color.spectator .. newname)
         end)
+        return 1
+    else
+        return 0
     end
-
-    return 1
 end)
 
 Hook("team", function(p, team)
