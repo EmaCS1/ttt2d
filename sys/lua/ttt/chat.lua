@@ -1,11 +1,11 @@
 Chat = {}
 Chat.commands = {}
 
-function Chat.add_command(cmd, desc, rank, func)
+function Chat.add_command(cmd, params, desc, rank, func)
     if Chat.commands[cmd] then
         error("Chat command already exists: " .. cmd)
     else
-        Chat.commands[cmd] = {desc = desc, rank = rank, func = func}
+        Chat.commands[cmd] = {cmd = cmd, params = params, desc = desc, rank = rank, func = func}
     end
 end
 
@@ -39,7 +39,7 @@ function Chat.command(p, message)
     end
 
     if not Chat.commands[command:sub(2)] then
-        p:msg(Color.traitor .. "Command not found!")
+        p:msg(Color.traitor .. "Command not found: " .. command)
         return true
     end
 
@@ -47,11 +47,12 @@ function Chat.command(p, message)
     local rank = Chat.commands[command:sub(2)].rank
 
     if p.rank < rank then
-        p:msg(Color.traitor .. "You're not allowed to use that command!")
+        p:msg(Color.traitor .. "You're not allowed to use command \"" .. command .. "\"")
     else
-        print(p.name .. " used command " .. message)
+        print(p.name .. "[#" .. p.usgn .. "] used command: " .. message)
         func(p, message:sub(command:len()+2))
     end
+
     return true
 end
 
@@ -137,29 +138,29 @@ Hook('sayteam', function(p, message)
     return 1
 end)
 
-Chat.add_command("commands", "Show commands available", RANK_GUEST, function(p, arg)
+Chat.add_command("commands", "", "Show available commands", RANK_GUEST, function(p, arg)
     for command,tbl in pairs(Chat.commands) do
         if p.rank >= tbl.rank then
-            p:msg(Color.white .. command .. " - " .. tbl.desc)
+            p:msg(Color.white .. command .. " " .. tbl.params ..  " - " .. tbl.desc)
         end
     end
 end)
 
-Chat.add_command("map", "Change map", RANK_MODERATOR, function(p, arg)
+Chat.add_command("map", "<mapname>", "Change map", RANK_MODERATOR, function(p, arg)
     Parse('map', arg)
 end)
 
-Chat.add_command("maplist", "List official maps", RANK_MODERATOR, function(p, arg)
+Chat.add_command("maplist", "", "List official maps", RANK_MODERATOR, function(p, arg)
     for _,map in pairs(TTT.maps) do
         p:msg(Color.white .. map)
     end
 end)
 
-Chat.add_command("bc", "Broadcast a message", RANK_MODERATOR, function(p, arg)
+Chat.add_command("bc", "<message>", "Broadcast a message", RANK_MODERATOR, function(p, arg)
     msg(Color.white .. arg)
 end)
 
-Chat.add_command("reset", "Reset player's karma", RANK_ADMIN, function(p, arg)
+Chat.add_command("reset", "<id>", "Reset player's karma", RANK_ADMIN, function(p, arg)
     local id = tonumber(arg)
     if not id or  id < 1 or id > 32 then
         p:msg("Invalid id")
@@ -170,7 +171,7 @@ Chat.add_command("reset", "Reset player's karma", RANK_ADMIN, function(p, arg)
     Player(id).score = Karma.base
 end)
 
-Chat.add_command("ban", "Ban player for 6 hours", RANK_MODERATOR, function(p, arg)
+Chat.add_command("ban", "<id> <length> <reason>", "Ban player with a reason", RANK_MODERATOR, function(p, arg)
     local id = tonumber(arg)
     if not Player(id) or not Player(id).exists then
         p:msg(Color.traitor .. "Player with that ID doesn't exist")
@@ -186,7 +187,7 @@ Chat.add_command("ban", "Ban player for 6 hours", RANK_MODERATOR, function(p, ar
     end
 end)
 
-Chat.add_command("stats", "View player stats", RANK_MODERATOR, function(p, arg)
+Chat.add_command("stats", "<id>", "View player stats", RANK_MODERATOR, function(p, arg)
     local id = tonumber(arg)
     if not Player(id) or not Player(id).exists then
         p:msg(Color.traitor .. "Player with that ID doesn't exist")
@@ -201,7 +202,7 @@ Chat.add_command("stats", "View player stats", RANK_MODERATOR, function(p, arg)
     p:msg(Color.white .. "Playtime: " .. Player(id).playtime)
 end)
 
-Chat.add_command("kick", "Kick player", RANK_MODERATOR, function(p, arg)
+Chat.add_command("kick", "<id>", "Kick player", RANK_MODERATOR, function(p, arg)
     local id = tonumber(arg)
     if not Player(id) or not Player(id).exists then
         p:msg(Color.traitor .. "Player with that ID doesn't exist")
@@ -210,32 +211,39 @@ Chat.add_command("kick", "Kick player", RANK_MODERATOR, function(p, arg)
     Player(id):kick("Kicked by " .. p.name)
 end)
 
-Chat.add_command("vote", "Begin map voting", RANK_MODERATOR, function(p, arg)
+Chat.add_command("vote", "", "Begin map voting", RANK_MODERATOR, function(p, arg)
     TTT.vote_map()
 end)
 
-Chat.add_command("fun", "Set next round traitor only", RANK_MODERATOR, function(p, arg)
+Chat.add_command("fun", "", "Set next round traitor only", RANK_MODERATOR, function(p, arg)
     TTT.fun = true
 end)
 
-Chat.add_command("report", "Send message to the admins", RANK_GUEST, function(p, arg)
+Chat.add_command("report", "<message>", "Send message to the admins", RANK_GUEST, function(p, arg)
     Player.each(function(p2)
         if p2.rank >= RANK_MODERATOR then
-            p2:msg(Color.traitor .. "[REPORT] " .. p:c_name() .. Color.white .. ": " .. arg)
+            p2:msg(Color.traitor .. "[REPORT] " .. Color.white .. p.name .. ": " .. arg)
         end
     end)
 end)
 
-Chat.add_command("make_moderator", "Make moderator", RANK_ADMIN, function(p, arg)
-    local id = tonumber(arg)
+Chat.add_command("rank", "<id> <ranknumber>", "Set player rank", RANK_ADMIN, function(p, arg)
+    local tbl = string.match(arg, "(%d+) (%d+)")
+    if not tbl then
+        p:msg(Color.traitor .. "Invalid arguments!")
+    end
+
+    local id = tonumber(tbl[1])
+    local rank = tonumber(tbl[2])
     if not Player(id) or not Player(id).exists then
         p:msg(Color.traitor .. "Player with that ID doesn't exist")
         return
     end
-    Player(id).rank = RANK_MODERATOR
+    Player(id).rank = rank
 end)
 
-Chat.add_command("points", "Show how many points you got", RANK_GUEST, function(p, arg)
+Chat.add_command("points", "", "Show how many points you got", RANK_GUEST, function(p, arg)
     local points = math.floor(p.points)
-    p:msg(Color.white.."Points: "..Color.traitor..(points-p.points_used)..Color.white.." Total earned: "..Color.traitor..points)
+    p:msg(Color.white.."Points: "..Color.traitor..(points-p.points_used))
+    p:msg(Color.white.." Total earned: "..Color.traitor..points)
 end)
