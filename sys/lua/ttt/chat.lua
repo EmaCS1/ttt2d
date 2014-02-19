@@ -180,6 +180,7 @@ Chat.add_command("ban", "<id> <duration> <reason>", "Ban player with a reason", 
     local id, duration, reason = string.match(arg, "(%d+) (%d+) (.+)")
     id = tonumber(id)
     duration = tonumber(duration)
+
     if not id or not duration or not reason then
         p:msg(Color.traitor .. "Invalid arguments!")
         return
@@ -192,12 +193,6 @@ Chat.add_command("ban", "<id> <duration> <reason>", "Ban player with a reason", 
 
     if string.len(reason) < 10 then
         p:msg(Color.traitor .. "Too short reason for a ban")
-        return
-    end
-
-    local id = tonumber(arg)
-    if not Player(id) or not Player(id).exists then
-        p:msg(Color.traitor .. "Player with that ID doesn't exist")
         return
     end
 
