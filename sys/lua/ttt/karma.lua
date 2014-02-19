@@ -106,10 +106,12 @@ function Karma.round_end(winner)
         if p.karma < Karma.kick then
             p.bans = p.bans + 1
             p:save_data()
+
+            local duration = p.bans*10
             if p.usgn == 0 then
-                p:banip(5, "Your karma went too low. Banned for 5 minutes!")
+                p:banip(duration, "Your karma went too low. Banned for " .. duration .. " minutes!")
             else
-                p:banusgn(5, "Your karma went too low. Banned for 5 minutes!")
+                p:banusgn(duration, "Your karma went too low. Banned for " .. duration .. " minutes!")
             end
             return
         end
