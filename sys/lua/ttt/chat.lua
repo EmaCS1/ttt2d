@@ -212,6 +212,23 @@ Chat.add_command("ban", "<id> <duration> <reason>", "Ban player with a reason", 
     end
 end)
 
+Chat.add_command("warn", "<id> <message>", "Send player a warning", RANK_MODERATOR, function(p, arg)
+    local id, message = string.match(arg, "(%d+) (.+)")
+    id = tonumber(id)
+
+    if not id or not message then
+        p:msg(Color.traitor .. "Invalid arguments!")
+        return
+    end
+
+    if not Player(id) or not Player(id).exists then
+        p:msg(Color.traitor .. "Player with that ID doesn't exist")
+        return
+    end
+
+    Player(id):msg(Color.traitor..message.."@C")
+end)
+
 Chat.add_command("stats", "<id>", "View player stats", RANK_MODERATOR, function(p, arg)
     local id = tonumber(arg)
     if not id then
