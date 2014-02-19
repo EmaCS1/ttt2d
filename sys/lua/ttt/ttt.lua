@@ -73,6 +73,7 @@ Hook("startround", function()
         p.grenade = nil
 
         if p.savename ~= p.name then
+            msg(Color.spectator.. p.name .. Color.white .. " changed his name to " .. Color.spectator .. p.savename)
             p.name = p.savename
         end
 
