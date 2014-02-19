@@ -275,6 +275,8 @@ function Player.mt:load_data()
 
     if self.savename ~= "Player" then
         self.name = self.savename
+    else
+        self.savename = self.name
     end
 
     if self.karma < Karma.reset then
