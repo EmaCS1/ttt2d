@@ -248,6 +248,10 @@ end)
 
 Hook("radio", function(p, id)
     if id == 9 and p.mouse then -- enemy spotted
+        if p.nospot then
+            return 1
+        end
+
         local x = p.mouse.x
         local y = p.mouse.y
 
@@ -259,7 +263,7 @@ Hook("radio", function(p, id)
             local diffy = math.abs(p2.y-y)
             local newdist = diffx*diffx + diffy*diffy
 
-            if newdist < dist then
+            if newdist < dist and p2 ~= p then
                 target = p2
                 dist = newdist
             end
@@ -268,6 +272,11 @@ Hook("radio", function(p, id)
         if target then
             Chat.message(p, target.name .. " is TRAITOR!")
         end
+
+        p.nospot = true
+        Timer(5000, function()
+            p.nospot = false
+        end)
     end
     return 1
 end)
