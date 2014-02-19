@@ -129,21 +129,20 @@ Hook("die", function(p)
 end)
 
 Hook("name", function(p, oldname, newname, forced)
-    if forced == 1 then
-        return
-    end
-
     if TTT.state == S_RUNNING then
         p:msg(Color.traitor .. "You can't change your name while the game is running!")
         return 1
     end
 
-    Timer(1, function()
-        p.savename = newname
-        p.name = newname
+    if p.savename ~= newname then
+        Timer(1, function()
+            p.savename = newname
+            p.name = newname
 
-        msg(Color.spectator.. oldname .. Color.white .. " changed his name to " .. Color.spectator .. newname)
-    end)
+            msg(Color.spectator.. oldname .. Color.white .. " changed his name to " .. Color.spectator .. newname)
+        end)
+    end
+
     return 1
 end)
 
