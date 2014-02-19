@@ -205,6 +205,8 @@ Chat.add_command("ban", "<id> <duration> <reason>", "Ban player with a reason", 
     p2.bans = p2.bans + 1
     p2:save_data()
 
+    msg(Color.traitor .. p.name .. " banned " .. p2.name .. " for " .. duration .. " minutes: " .. reason)
+
     if p2.usgn == 0 then
         p2:banip(duration, reason)
     else
@@ -229,7 +231,7 @@ Chat.add_command("warn", "<id> <message>", "Send player a warning", RANK_MODERAT
     Player(id):msg(Color.traitor..message.."@C")
 end)
 
-Chat.add_command("stats", "<id>", "View player stats", RANK_MODERATOR, function(p, arg)
+Chat.add_command("info", "<id>", "View player info", RANK_MODERATOR, function(p, arg)
     local id = tonumber(arg)
     if not id then
         p:msg(Color.traitor .. "Invalid arguments!")
@@ -255,7 +257,7 @@ Chat.add_command("stats", "<id>", "View player stats", RANK_MODERATOR, function(
     p:msg(Color.white .. "Best karma: " .. p2.topkarma)
 end)
 
-Chat.add_command("status", "", "View your status", RANK_GUEST, function(p, arg)
+Chat.add_command("stats", "", "View your stats", RANK_GUEST, function(p, arg)
     p:msg(Color.white .. "Points: " .. math.floor(p.points) - p.points_used)
     p:msg(Color.white .. "Points total earned: " .. math.floor(p.points))
     p:msg(Color.white .. "Best karma: " .. p.topkarma)
