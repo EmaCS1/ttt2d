@@ -129,6 +129,7 @@ Hook("die", function(p)
 end)
 
 Hook("name", function(p, oldname, newname, forced)
+    print("name " .. p.id .. "-" .. oldname .. "-" .. newname .. "-" .. forced)
     if forced then
         return
     end
