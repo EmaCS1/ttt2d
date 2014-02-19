@@ -274,7 +274,9 @@ function Player.mt:load_data()
     end
 
     if self.savename ~= "Player" then
-        self.name = self.savename
+        Timer(1, function()
+            self.name = self.savename
+        end)
     else
         self.savename = self.name
     end
