@@ -259,13 +259,13 @@ Chat.add_command("info", "<id>", "View player info", RANK_MODERATOR, function(p,
     local hours = math.floor(p2.playtime/3600)
     local minutes = math.floor(p2.playtime/60) - hours*60
     p:msg(Color.white .. "Time played: " .. hours .. "h " .. minutes .. "min")
-    p:msg(Color.white .. "Best karma: " .. p2.topkarma)
+    p:msg(Color.white .. "Best karma: " .. math.floor(p2.topkarma))
 end)
 
 Chat.add_command("stats", "", "View your stats", RANK_GUEST, function(p, arg)
     p:msg(Color.white .. "Points: " .. math.floor(p.points) - p.points_used)
     p:msg(Color.white .. "Points total earned: " .. math.floor(p.points))
-    p:msg(Color.white .. "Best karma: " .. p.topkarma)
+    p:msg(Color.white .. "Best karma: " .. math.floor(p.topkarma))
     local hours = math.floor(p.playtime/3600)
     local minutes = math.floor(p.playtime/60) - hours*60
     p:msg(Color.white .. "Time played: " .. hours .. "h " .. minutes .. "min")
