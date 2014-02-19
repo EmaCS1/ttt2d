@@ -162,8 +162,13 @@ end)
 
 Chat.add_command("reset", "<id>", "Reset player's karma", RANK_ADMIN, function(p, arg)
     local id = tonumber(arg)
-    if not id or  id < 1 or id > 32 then
-        p:msg("Invalid id")
+    if not id then
+        p:msg(Color.traitor .. "Invalid arguments!")
+        return
+    end
+
+    if not Player(id) or not Player(id).exists then
+        p:msg(Color.traitor .. "Player with that ID doesn't exist")
         return
     end
 
@@ -171,39 +176,76 @@ Chat.add_command("reset", "<id>", "Reset player's karma", RANK_ADMIN, function(p
     Player(id).score = Karma.base
 end)
 
-Chat.add_command("ban", "<id> <length> <reason>", "Ban player with a reason", RANK_MODERATOR, function(p, arg)
+Chat.add_command("ban", "<id> <duration> <reason>", "Ban player with a reason", RANK_MODERATOR, function(p, arg)
+    local id, duration, reason = string.match(arg, "%d+ %d+ .+")
+    id = tonumber(id)
+    duration = tonumber(duration)
+    if not id or not duration or not reason then
+        p:msg(Color.traitor .. "Invalid arguments!")
+        return
+    end
+
+    if not Player(id) or not Player(id).exists then
+        p:msg(Color.traitor .. "Player with that ID doesn't exist")
+        return
+    end
+
+    if string.len(reason) < 10 then
+        p:msg(Color.traitor .. "Too short reason for a ban")
+        return
+    end
+
     local id = tonumber(arg)
     if not Player(id) or not Player(id).exists then
         p:msg(Color.traitor .. "Player with that ID doesn't exist")
         return
     end
-    Player(id).bans = Player(id).bans + 1
-    Player(id):save_data()
 
-    if Player(id).usgn == 0 then
-        Player(id):banip(6*60, "Banned by " .. p.name)
+    if Player(id) == p then
+        p:msg(Color.traitor .. "You can't ban yourself")
+        return
+    end
+
+    local p2 = Player(id)
+    p2.bans = p2.bans + 1
+    p2:save_data()
+
+    if p2.usgn == 0 then
+        p2:banip(duration, reason)
     else
-        Player(id):banusgn(6*60, "Banned by " .. p.name)
+        p2:banusgn(duration, reason)
     end
 end)
 
 Chat.add_command("stats", "<id>", "View player stats", RANK_MODERATOR, function(p, arg)
     local id = tonumber(arg)
+    if not id then
+        p:msg(Color.traitor .. "Invalid arguments!")
+        return
+    end
+
     if not Player(id) or not Player(id).exists then
         p:msg(Color.traitor .. "Player with that ID doesn't exist")
         return
     end
 
-    p:msg(Color.white .. "Statistics for " .. Player(id):c_name())
-    p:msg(Color.white .. "Points: " .. math.floor(Player(id).points))
-    p:msg(Color.white .. "Points used: " .. Player(id).points_used)
-    p:msg(Color.white .. "Bans: " .. Player(id).bans)
-    p:msg(Color.white .. "Teamkills: " .. Player(id).teamkills)
-    p:msg(Color.white .. "Playtime: " .. Player(id).playtime)
+    local p2 = Player(id)
+
+    p:msg(Color.white .. "Statistics for " .. p2:c_name())
+    p:msg(Color.white .. "Points: " .. math.floor(p2.points) - p2.points_used)
+    p:msg(Color.white .. "Points total earned: " .. p2.points)
+    p:msg(Color.white .. "Bans: " .. p2.bans)
+    p:msg(Color.white .. "Teamkills: " .. p2.teamkills)
+    p:msg(Color.white .. "Playtime: " .. p2.playtime)
 end)
 
 Chat.add_command("kick", "<id>", "Kick player", RANK_MODERATOR, function(p, arg)
     local id = tonumber(arg)
+    if not id then
+        p:msg(Color.traitor .. "Invalid arguments!")
+        return
+    end
+
     if not Player(id) or not Player(id).exists then
         p:msg(Color.traitor .. "Player with that ID doesn't exist")
         return
@@ -228,13 +270,15 @@ Chat.add_command("report", "<message>", "Send message to the admins", RANK_GUEST
 end)
 
 Chat.add_command("rank", "<id> <ranknumber>", "Set player rank", RANK_ADMIN, function(p, arg)
-    local tbl = string.match(arg, "(%d+) (%d+)")
-    if not tbl then
+    local id, rank = string.match(arg, "(%d+) (%d+)")
+    id = tonumber(id)
+    rank = tonumber(rank)
+
+    if not id or not rank then
         p:msg(Color.traitor .. "Invalid arguments!")
+        return
     end
 
-    local id = tonumber(tbl[1])
-    local rank = tonumber(tbl[2])
     if not Player(id) or not Player(id).exists then
         p:msg(Color.traitor .. "Player with that ID doesn't exist")
         return
