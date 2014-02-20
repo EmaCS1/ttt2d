@@ -106,10 +106,10 @@ function Karma.round_end(winner)
         if p.karma < Karma.kick then
             p.bans = p.bans + 1
             p:save_data()
+            local duration = p.bans*5
 
             msg(Color.traitor .. "Banned " .. p.name .. " for " .. duration .. " minutes! (LOW KARMA)")
 
-            local duration = p.bans*5
             if p.usgn == 0 then
                 p:banip(duration, "Your karma went too low. Banned for " .. duration .. " minutes!")
             else
