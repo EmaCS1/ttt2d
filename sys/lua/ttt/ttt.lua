@@ -252,7 +252,7 @@ Hook("use", function(p)
                 p:msg(txt)
             end
 
-            local img = Image("gfx/sprites/snowflage.bmp<a>", info.x, info.y, 3, p.id)
+            local img = Image("gfx/sprites/snowflake.bmp<a>", info.x, info.y, 3, p.id)
             img:scale(0.2, 0.2)
             img:t_move(3000, info.killer_x, info.killer_y)
             img:t_scale(5000, 0.5, 0.5)
