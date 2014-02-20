@@ -65,8 +65,10 @@ function Player.mt:set_mia(killer)
         killer = self
     end
 
-    if self.weapon and self.weapon ~= 50 then
-        Parse("spawnitem", self.weapon, self.tilex, self.tiley)
+    for _,wpn in pairs(self.weapons) do
+        if wpn ~= 50 and math.random(4) ~= 2 then
+            Parse("spawnitem", self.weapon, self.tilex, self.tiley)
+        end
     end
 
     self.info = {
