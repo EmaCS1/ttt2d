@@ -72,7 +72,7 @@ Hook("startround", function()
         end
         p.grenade = nil
 
-        if p.savename ~= p.name and p.savename ~= "Player" then
+        if p.savename and p.savename ~= p.name and p.savename ~= "Player" then
             msg(Color.spectator.. p.name .. Color.white .. " changed his name to " .. Color.spectator .. p.savename)
             p.name = p.savename
         end
@@ -214,7 +214,7 @@ end)
 
 Hook("use", function(p)
     Player.each(function(p2)
-        if not p2.info then -- if player doesn't have a corpse
+        if not p2.info or not p2.info.x then -- if player doesn't have a corpse
             return
         end
 
@@ -583,13 +583,15 @@ TTT.voter_count = 0
 TTT.vote_nextmap = nil
 
 TTT.vote_menu = function(p, key, value)
-    TTT.vote_result[key] = TTT.vote_result[key] + 1
-
     TTT.vote_count = TTT.vote_count + 1
 
-    if TTT.vote_result[key] > TTT.voter_count/2 then
-        msg(Color.white .. "Next map will be: " .. key .. "@C")
-        TTT.vote_nextmap = key
+    if type(key) == "string" then
+        TTT.vote_result[key] = TTT.vote_result[key] + 1
+
+        if TTT.vote_result[key] > TTT.voter_count/2 then
+            msg(Color.white .. "Next map will be: " .. key .. "@C")
+            TTT.vote_nextmap = key
+        end
     end
 end
 

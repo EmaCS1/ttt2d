@@ -216,7 +216,7 @@ function Player.mt:save_data()
     self.playtime = self.playtime + (timenow - self.savetime)
     self.savetime = timenow
 
-    if self.karma > self.topkarma then
+    if not self.topkarma or self.karma > self.topkarma then
         self.topkarma = self.karma
     end
 
